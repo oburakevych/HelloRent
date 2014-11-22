@@ -1,0 +1,10 @@
+{
+  "firebase": "hello-rent",
+  "public": ".",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**",
+    "master"
+  ]
+}

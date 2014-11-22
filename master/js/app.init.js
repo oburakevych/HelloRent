@@ -1,9 +1,8 @@
 /*!
  * 
- * Angle - Bootstrap Admin App + AngularJS
+ * HelloRent - Platform for Self Managing Landlords
  * 
- * Author: @themicon_co
- * Website: http://themicon.co
+ * Based on template from website: http://themicon.co
  * License: http://support.wrapbootstrap.com/knowledge_base/topics/usage-licenses
  * 
  */
@@ -31,8 +30,8 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
               // Scope Globals
               // ----------------------------------- 
               $rootScope.app = {
-                name: 'Angle',
-                description: 'Angular Bootstrap Admin Template',
+                name: 'Hello Rent',
+                description: 'Platform for Self Managing Landlords',
                 year: ((new Date()).getFullYear()),
                 layout: {
                   isFixed: true,
@@ -43,9 +42,9 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
                 viewAnimation: 'ng-fadeInUp'
               };
               $rootScope.user = {
-                name:     'John',
-                job:      'ng-Dev',
-                picture:  'app/img/user/02.jpg'
+                name:     'Alex',
+                job:      'Landlord',
+                picture:  'app/img/user/alex-image.png'
               };
             }
           ]);

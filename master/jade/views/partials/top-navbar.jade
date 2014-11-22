@@ -4,9 +4,11 @@ nav.navbar.topnavbar(role='navigation')
     .navbar-header
       a.navbar-brand(href='#/') 
         .brand-logo 
-          img.img-responsive(src="app/img/logo.png", alt="App Logo")
+          //img.img-responsive(src="app/img/logo.png", alt="App Logo")
+          span HelloRent
         .brand-logo-collapsed 
-          img.img-responsive(src="app/img/logo-single.png", alt="App Logo")
+          //img.img-responsive(src="app/img/logo-single.png", alt="App Logo")
+          span HelloRent
     // END navbar header
 
     // START Nav wrapper
@@ -26,11 +28,6 @@ nav.navbar.topnavbar(role='navigation')
           a(href='#', ng-click="toggleUserBlock()")
             em.icon-user
         // END User avatar toggle
-        // START lock screen
-        li
-          a(ui-sref="page.lock", title="Lock screen")
-            em.icon-lock
-        // END lock screen
       // END Left navbar
 
       // START Right Navbar
@@ -47,7 +44,7 @@ nav.navbar.topnavbar(role='navigation')
         li.dropdown.dropdown-list
           a.dropdown-toggle(href='#', dropdown-animate="")
             em.icon-bell
-            .label.label-danger 11
+            .label.label-danger 4
           // START Dropdown menu
           ul.dropdown-menu(class="animated flipInX")
             li
@@ -57,39 +54,13 @@ nav.navbar.topnavbar(role='navigation')
                 a.list-group-item(href='#')
                   .media
                     .pull-left
-                      em.fa.fa-twitter.fa-2x.text-info
-                    .media-body.clearfix
-                        p.m0 New followers
-                        p.m0.text-muted: small 1 new follower
-                // list item
-                a.list-group-item(href='#')
-                  .media
-                    .pull-left
                       em.fa.fa-envelope.fa-2x.text-warning
                     .media-body.clearfix
-                        p.m0 New e-mails
-                        p.m0.text-muted: small You have 10 new emails
-                // list item
-                a.list-group-item(href='#')
-                  .media
-                    .pull-left
-                      em.fa.fa-tasks.fa-2x.text-success
-                    .media-body.clearfix
-                        p.m0 Pending Tasks
-                        p.m0.text-muted: small 11 pending task
-
-                // last list item 
-                a.list-group-item(href='#')
-                  small(translate="topbar.notification.MORE") More notifications
-                  span.label.label-danger.pull-right 14
+                        p.m0 New applications
+                        p.m0.text-muted: small You have 4 new applications
               // END list group
           // END Dropdown menu
         // END Alert menu
-        // START Contacts button
-        li
-          a(href='#', toggle-state="offsidebar-open", no-persist)
-            em.icon-notebook
-        // END Contacts menu
       // END Right Navbar
     // END Nav wrapper
     
