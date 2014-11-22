@@ -13,7 +13,7 @@ if (typeof $ === 'undefined') { throw new Error('This application\'s JavaScript 
 // APP START
 // ----------------------------------- 
 
-var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCookies', 'pascalprecht.translate', 'ui.bootstrap', 'ui.router', 'oc.lazyLoad', 'cfp.loadingBar'])
+var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCookies', 'pascalprecht.translate', 'ui.bootstrap', 'ui.router', 'oc.lazyLoad', 'cfp.loadingBar', 'firebase'])
           .run(["$rootScope", "$state", "$stateParams",  '$window', '$templateCache', function ($rootScope, $state, $stateParams, $window, $templateCache) {
               // Set reference to access them from any scope
               $rootScope.$state = $state;
@@ -30,7 +30,7 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
               // Scope Globals
               // ----------------------------------- 
               $rootScope.app = {
-                name: 'Hello Rent',
+                name: 'HelloRent',
                 description: 'Platform for Self Managing Landlords',
                 year: ((new Date()).getFullYear()),
                 layout: {

@@ -59,8 +59,7 @@ App
       'datatables':         ['vendor/datatable/media/js/jquery.dataTables.min.js', 'vendor/datatable/extensions/datatable-bootstrap/css/dataTables.bootstrap.css'],
       'datatables-pugins':  ['vendor/datatable/extensions/datatable-bootstrap/js/dataTables.bootstrap.js','vendor/datatable/extensions/datatable-bootstrap/js/dataTables.bootstrapPagination.js','vendor/datatable/extensions/ColVis/js/dataTables.colVis.min.js', 'vendor/datatable/extensions/ColVis/css/dataTables.colVis.css'],
       'flatdoc':            ['vendor/flatdoc/flatdoc.js'],
-      'angularfire':        ['vendor/firebase/angularfire.min.js'],
-      'firebase':           ['vendor/firebase/firebase.min.js']
+      'firebase':           ['vendor/firebase/firebase.min.js', 'vendor/firebase/angularfire.js']
     },
     modules: [
       { name: 'toaster',         files: ['vendor/toaster/toaster.js', 'vendor/toaster/toaster.css'] },

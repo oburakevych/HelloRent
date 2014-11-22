@@ -42,6 +42,7 @@
     },
     "nav": {
       "DASHBOARD": "Dashboard",
+      "APPLICATIONS": "Tenant Applications",
       "WIDGETS": "Widgets",
       "WIDGETS": "Widgets",
       "DOCUMENTATION": "Documentation",

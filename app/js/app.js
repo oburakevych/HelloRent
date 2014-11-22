@@ -13,7 +13,7 @@ if (typeof $ === 'undefined') { throw new Error('This application\'s JavaScript 
 // APP START
 // ----------------------------------- 
 
-var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCookies', 'pascalprecht.translate', 'ui.bootstrap', 'ui.router', 'oc.lazyLoad', 'cfp.loadingBar'])
+var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCookies', 'pascalprecht.translate', 'ui.bootstrap', 'ui.router', 'oc.lazyLoad', 'cfp.loadingBar', 'firebase'])
           .run(["$rootScope", "$state", "$stateParams",  '$window', '$templateCache', function ($rootScope, $state, $stateParams, $window, $templateCache) {
               // Set reference to access them from any scope
               $rootScope.$state = $state;
@@ -30,7 +30,7 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
               // Scope Globals
               // ----------------------------------- 
               $rootScope.app = {
-                name: 'Hello Rent',
+                name: 'HelloRent',
                 description: 'Platform for Self Managing Landlords',
                 year: ((new Date()).getFullYear()),
                 layout: {
@@ -76,6 +76,144 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
   });
 
 
+
+  App.applications = {
+      "657890860" : {
+        "DOB" : "10/02/82",
+        "age": 32,
+        "addresses" : [ {
+          "line1" : "121/256 Flinders St",
+          "postCode" : 3000,
+          "type" : "current"
+        } ],
+        "criminalOffences" : {
+          "criminalOffence" : "yes",
+          "details" : "Parking ticket"
+        },
+        "email" : "oburakevych@gmail.com",
+        "employmentDetails" : {
+          "isEmployed" : "Yes",
+          "position": "Junior developer"
+        },
+        "bankruptcy" : {
+          "hasFiledBankruptcy": false
+        },
+        "firstName" : "Jane",
+        "gender" : "f",
+        "identity" : {
+          "passportNumber" : 4456789
+        },
+        "lastName" : "Brown",
+        "image": "app/img/user/09.jpg",
+        "pets" : "no",
+        "phone" : "098765431",
+        "references" : [ {
+          "name" : "Mr Smith",
+          "relationship" : "manager"
+        } ],
+        "refusedRent" : "no",
+        "smoker" : "yes",
+        "social": {
+          "facebook" : "facebook_username"
+        },
+        "creditScore": 587,
+        "income": {
+            "amount": 2000,
+            "type": "week",
+            "currency": "AUD" 
+        }
+      },
+      "757890860" : {
+        "DOB" : "11/11/78",
+        "age": 36,
+        "addresses" : [ {
+          "line1" : "16 Ovens St",
+          "postCode" : 3039,
+          "type" : "current"
+        } ],
+        "criminalOffences" : {
+          "criminalOffence" : "no",
+          "details" : ""
+        },
+        "email" : "silvia@oxford.com",
+        "employmentDetails" : {
+          "isEmployed" : "Yes"
+        },
+        "bankruptcy" : {
+          "hasFiledBankruptcy": false
+        },
+        "firstName" : "Silvia",
+        "image": "app/img/user/08.jpg",
+        "gender" : "f",
+        "identity" : {
+          "passportNumber" : 856781
+        },
+        "lastName" : "Crown",
+        "pets" : "no",
+        "phone" : "048715105",
+        "references" : [ {
+          "name" : "Mr Arnold Clone",
+          "relationship" : "manager"
+        } ],
+        "refusedRent" : "no",
+        "smoker" : "no",
+        "social": {
+          "facebook" : "facebook_username"
+        },
+        "creditScore": 882,
+        "income": {
+            "amount": 6900,
+            "type": "month",
+            "currency": "AUD" 
+        }
+      },
+      "857892860" : {
+        "DOB" : "14/08/82",
+        "age": 32,
+        "addresses" : [ {
+          "line1" : "24 Hunters St",
+          "postCode" : 3020,
+          "type" : "current"
+        } ],
+        "criminalOffences" : {
+          "criminalOffence" : "no",
+          "details" : ""
+        },
+        "email" : "lindon.grey@gmail.com",
+        "employmentDetails" : {
+          "isEmployed" : "Yes",
+          "position": "Student"
+        },
+        "bankruptcy" : {
+          "hasFiledBankruptcy": false
+        },
+        "firstName" : "Lindon",
+        "gender" : "m",
+        "identity" : {
+          "passportNumber" : 2653719
+        },
+        "lastName" : "Grey",
+        "image": "app/img/user/10.jpg",
+        "pets" : "no",
+        "phone" : "046665431",
+        "references" : [ {
+          "name" : "Mr Alex Lee",
+          "relationship" : "manager"
+        } ],
+        "refusedRent" : "no",
+        "smoker" : "yes",
+        "social": {
+          "facebook" : "facebook_username"
+        },
+        "creditScore": 764,
+        "income": {
+            "amount": 5880,
+            "type": "month",
+            "currency": "AUD" 
+        }
+      },
+    };
+
   // defaults to dashboard
   $urlRouterProvider.otherwise('/app/applications');
 
@@ -88,13 +226,21 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         abstract: true,
         templateUrl: basepath('app.html'),
         controller: 'AppController',
-        resolve: resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'csspiner')
+        resolve: resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'csspiner', 'firebase')
     })
     .state('app.dashboard', {
         url: '/applications',
         title: 'Applications',
         templateUrl: basepath('applications.html'),
-        resolve: resolveFor('flot-chart','flot-chart-plugins')
+        resolve: resolveFor('flot-chart','flot-chart-plugins'),
+        controller: 'ApplicationsController'
+    })
+    .state('app.view-application', {
+        url: '/applications/:id',
+        title: 'Application',
+        templateUrl: basepath('application.html'),
+        resolve: resolveFor('flot-chart','flot-chart-plugins'),
+        controller: 'ApplicationController'
     })
     .state('app.widgets', {
         url: '/widgets',
@@ -523,8 +669,7 @@ App
       'datatables':         ['vendor/datatable/media/js/jquery.dataTables.min.js', 'vendor/datatable/extensions/datatable-bootstrap/css/dataTables.bootstrap.css'],
       'datatables-pugins':  ['vendor/datatable/extensions/datatable-bootstrap/js/dataTables.bootstrap.js','vendor/datatable/extensions/datatable-bootstrap/js/dataTables.bootstrapPagination.js','vendor/datatable/extensions/ColVis/js/dataTables.colVis.min.js', 'vendor/datatable/extensions/ColVis/css/dataTables.colVis.css'],
       'flatdoc':            ['vendor/flatdoc/flatdoc.js'],
-      'angularfire':        ['vendor/firebase/angularfire.min.js'],
-      'firebase':           ['vendor/firebase/firebase.min.js']
+      'firebase':           ['vendor/firebase/firebase.min.js', 'vendor/firebase/angularfire.js']
     },
     modules: [
       { name: 'toaster',         files: ['vendor/toaster/toaster.js', 'vendor/toaster/toaster.css'] },
@@ -596,6 +741,38 @@ App.controller('RegisterFormController', ['$scope', '$http', '$state', function(
 
 }]);
 
+/**=========================================================
+ * Module: notifications.js
+ * Initializes the notifications system
+ =========================================================*/
+App.controller('ApplicationsController', ['$scope', '$rootScope', function($scope, $rootScope){
+
+   $scope.applications = App.applications;
+
+}]);
+
+
+
+
+
+
+
+
+
+
+
+
+App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams){
+
+  console.log($stateParams);
+
+    var application = App.applications[$stateParams.id];
+
+    $scope.application = application;
+
+    console.log(application);
+
+}]);
 /**=========================================================
  * Module: calendar-ui.js
  * This script handle the calendar demo with draggable 
@@ -4416,6 +4593,91 @@ App.directive('vectorMap', ['vectorMap', function(vectorMap){
   };
 
 }]);
+/**=========================================================
+ * Module: application.js
+ * Services to find applications
+ =========================================================*/
+ 
+App.service('application', function() {
+  var applications = {
+      "657890860" : {
+        "DOB" : "11/11/88",
+        "addresses" : [ {
+          "line1" : "256 flinders street",
+          "postCode" : 9999,
+          "type" : "current"
+        } ],
+        "criminalOffences" : {
+          "criminalOffence" : "yes",
+          "details" : "killed a guy"
+        },
+        "email" : "oburakevych@gmail.com",
+        "employmentDetails" : {
+          "isEmployed" : true,
+          "position": "junior developer"
+        },
+        "bankruptcy" : {
+          "hasFiledBankruptcy": false
+        },
+        "firstName" : "Alex",
+        "gender" : "m",
+        "identity" : {
+          "passportNumber" : 456789
+        },
+        "lastName" : "Last",
+        "image": "app/img/user/08.jpg",
+        "pets" : "no",
+        "phone" : "098765431",
+        "references" : [ {
+          "name" : "mr smith",
+          "relationship" : "manager"
+        } ],
+        "refusedRent" : "no",
+        "smoker" : "yes",
+        "social": {
+          "facebook" : "facebook_username"
+        }
+      },
+      "757890860" : {
+        "DOB" : "11/11/88",
+        "addresses" : [ {
+          "line1" : "252 flinders street",
+          "postCode" : 9999,
+          "type" : "current"
+        } ],
+        "criminalOffences" : {
+          "criminalOffence" : "yes",
+          "details" : "killed a guy"
+        },
+        "email" : "oburakevych@gmail.com",
+        "employmentDetails" : {
+          "isEmployed" : false
+        },
+        "bankruptcy" : {
+          "hasFiledBankruptcy": false
+        },
+        "firstName" : "Marcy",
+        "gender" : "m",
+        "identity" : {
+          "passportNumber" : 456789
+        },
+        "lastName" : "Last",
+        "image": "app/img/user/09.jpg",
+        "pets" : "no",
+        "phone" : "098765431",
+        "references" : [ {
+          "name" : "mrs smith",
+          "relationship" : "manager"
+        } ],
+        "refusedRent" : "no",
+        "smoker" : "no",
+        "social": {
+          "facebook" : "facebook_username"
+        }
+      }
+    };
+  return application;
+});
 App.service('browser', function(){
   "use strict";
 

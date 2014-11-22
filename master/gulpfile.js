@@ -54,6 +54,7 @@ var vendorBaseScripts = [
   '../vendor/angular/angular-animate.min.js',
   '../vendor/angular/angular-ui-router.js',
   '../vendor/angular/angular-sanitize.min.js',
+  '../vendor/angular/angular-resource.min.js',
   // '../vendor/angular/angular-touch.js',
   // Angular storage
   '../vendor/angularstorage/ngStorage.js',
@@ -68,7 +69,10 @@ var vendorBaseScripts = [
   // UI Bootstrap
   '../vendor/bootstrap/js/ui-bootstrap-tpls-0.11.0.min.js',
   // Loading Bar
-  '../vendor/loadingbar/loading-bar.js'
+  '../vendor/loadingbar/loading-bar.js',
+  // Firebase
+  '../vendor/firebase/firebase.min.js',
+  '../vendor/firebase/angularfire.js'
 ];
 
 // SOURCES CONFIG 

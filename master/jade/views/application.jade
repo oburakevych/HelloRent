@@ -1,0 +1,70 @@
+.unwrap
+  .bg-cover(style="background-image: url(app/img/profile-bg.jpg)")
+    .p-xl.text-center.text-white
+      img.img-thumbnail.img-circle.thumb128(ng-src='{{application.image}}', alt="Image")
+      h3.m0 {{application.firstName}} {{application.lastName}}
+      p Age {{application.age}}
+      p {{application.phone}} | {{application.email}}
+
+
+      button.btn.btn-labeled.btn-success(type='button')
+        span.btn-label
+          i.fa.fa-check
+        | Approve
+      // Danger button with label 
+      button.btn.btn-labeled.btn-danger(type='button')
+        span.btn-label
+          i.fa.fa-times
+        | Decline
+
+
+  .text-center.bg-gray-dark.p-lg.mb-xl
+    .row.row-table
+      .col-xs-4
+        h3.m0 {{application.creditScore}}
+        p.m0 Credit Score
+      .col-xs-4
+        h3.m0 {{application.income.amount}}
+        p.m0 Salary
+      .col-xs-4
+        h3.m0 {{application.employmentDetails.isEmployed}}
+        p.m0 Employed
+
+
+// START row
+.row
+.col-lg-4
+  // START panel
+  #panelDemo7.panel(ng-class="{'panel-success': application.creditScore > 600, 'panel-warning': application.creditScore <= 600}")
+    .panel-heading
+      | Credit Score
+    .panel-body
+      p
+        | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.
+    .panel-footer
+      | Read More
+  // END panel
+.col-lg-4
+  // START panel
+  #panelDemo8.panel.panel-primary
+    .panel-heading
+      | Primary Panel
+    .panel-body
+      p
+        | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.
+    .panel-footer
+      | Read More
+  // END panel
+.col-lg-4
+  // START panel
+  #panelDemo9.panel.panel-success
+    .panel-heading
+      | Success Panel
+    .panel-body
+      p
+        | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.
+    .panel-footer
+      | Read more
+  // END panel
+// END row
+

@@ -5,9 +5,9 @@
     "translate": "sidebar.heading.HEADER"
   },
   {
-    "text": "Dashboard",
+    "text": "Applications",
     "sref": "app.dashboard",
-    "icon": "icon-grid",
-    "translate": "sidebar.nav.DASHBOARD"
+    "icon": "icon-note",
+    "translate": "sidebar.nav.APPLICATIONS"
   }
 ]

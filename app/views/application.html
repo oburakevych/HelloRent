@@ -1,0 +1,69 @@
+<div class="unwrap">
+   <div style="background-image: url(app/img/profile-bg.jpg)" class="bg-cover">
+      <div class="p-xl text-center text-white">
+         <img ng-src="{{application.image}}" alt="Image" class="img-thumbnail img-circle thumb128" />
+         <h3 class="m0">{{application.firstName}} {{application.lastName}}</h3>
+         <p>Age {{application.age}}</p>
+         <p>{{application.phone}} | {{application.email}}</p>
+         <button type="button" class="btn btn-labeled btn-success">
+            <span class="btn-label"><i class="fa fa-check"></i>
+            </span>Approve</button>
+         <!-- Danger button with label -->
+         <button type="button" class="btn btn-labeled btn-danger">
+            <span class="btn-label"><i class="fa fa-times"></i>
+            </span>Decline</button>
+      </div>
+   </div>
+   <div class="text-center bg-gray-dark p-lg mb-xl">
+      <div class="row row-table">
+         <div class="col-xs-4">
+            <h3 class="m0">{{application.creditScore}}</h3>
+            <p class="m0">Credit Score</p>
+         </div>
+         <div class="col-xs-4">
+            <h3 class="m0">{{application.income.amount}}</h3>
+            <p class="m0">Salary</p>
+         </div>
+         <div class="col-xs-4">
+            <h3 class="m0">{{application.employmentDetails.isEmployed}}</h3>
+            <p class="m0">Employed</p>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- START row-->
+<div class="row"></div>
+<div class="col-lg-4">
+   <!-- START panel-->
+   <div id="panelDemo7" ng-class="{'panel-success': application.creditScore &gt; 600, 'panel-warning': application.creditScore &lt;= 600}" class="panel">
+      <div class="panel-heading">Credit Score</div>
+      <div class="panel-body">
+         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+      </div>
+      <div class="panel-footer">Read More</div>
+   </div>
+   <!-- END panel-->
+</div>
+<div class="col-lg-4">
+   <!-- START panel-->
+   <div id="panelDemo8" class="panel panel-primary">
+      <div class="panel-heading">Primary Panel</div>
+      <div class="panel-body">
+         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+      </div>
+      <div class="panel-footer">Read More</div>
+   </div>
+   <!-- END panel-->
+</div>
+<div class="col-lg-4">
+   <!-- START panel-->
+   <div id="panelDemo9" class="panel panel-success">
+      <div class="panel-heading">Success Panel</div>
+      <div class="panel-body">
+         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+      </div>
+      <div class="panel-footer">Read more</div>
+   </div>
+   <!-- END panel-->
+</div>
+<!-- END row-->
