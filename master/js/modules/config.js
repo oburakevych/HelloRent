@@ -26,7 +26,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
 
 
   // defaults to dashboard
-  $urlRouterProvider.otherwise('/app/property');
+  $urlRouterProvider.otherwise('/app/applications');
 
   // 
   // Application Routes
@@ -40,9 +40,9 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         resolve: resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'csspiner')
     })
     .state('app.dashboard', {
-        url: '/property',
-        title: 'Property',
-        templateUrl: basepath('property.html'),
+        url: '/applications',
+        title: 'Applications',
+        templateUrl: basepath('applications.html'),
         resolve: resolveFor('flot-chart','flot-chart-plugins')
     })
     .state('app.widgets', {
