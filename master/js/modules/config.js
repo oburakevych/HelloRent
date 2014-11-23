@@ -196,7 +196,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
             title: "Excellent",
             min: 833,
             max: 100000,
-            cssClass: "panel-primary",
+            cssClass: "panel-success",
             description: "Excellent credit score means this tenant is in the top 20% of credit-active population, suggesting it’s HIGHLY UNLIKELY that an adverse event could harm his/her credit report in the next 12 months. Tenant's odds of keeping a clean file are 5 times better than average population."
         },
     }

@@ -37,7 +37,7 @@
   // START credit report panel
   #panelDemo7.panel(ng-class="report.cssClass")
     .panel-heading
-      | {{report.title}} credit score
+      h4 Credit Score: {{report.title}}
     .panel-body
       p
         | {{report.description}}
@@ -45,24 +45,64 @@
       | Read More
   // END panel
 .col-lg-4
-  // START panel
-  #panelDemo8.panel.panel-primary
+  // START panel Employment
+  #panelDemo8.panel.panel-success
     .panel-heading
-      | Primary Panel
+      h4 Currently Employed
     .panel-body
-      p
-        | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.
+        .row.row-table
+          .col-xs-12
+            ul.list-unstyled
+              li.mb-sm
+                em.fa.fa-clock-o.fa-fw
+                |  Since March 2011
+              li.mb-sm
+                em.fa.fa-map-marker.fa-fw
+                |  Vodafone, Sydney
+              li.mb-sm
+                em.fa.fa-user.fa-fw
+                | Reference: Mr Andrews
+              li.mb-sm
+                em.fa.fa-phone.fa-fw
+                |  0435806802
+              li.mb-sm
+                em.fa.fa-envelope.fa-fw
+                |  asdasd@mail.com
+
+    // END widget
+
     .panel-footer
       | Read More
   // END panel
 .col-lg-4
   // START panel
-  #panelDemo9.panel.panel-success
+  #panelDemo9.panel.panel-warning
     .panel-heading
-      | Success Panel
+      h4 Rental History
     .panel-body
-      p
-        | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.
+        .table-responsive
+          table.table.table-striped
+            thead
+              tr
+                th #
+                th Address
+                th Months
+            tbody
+              tr
+                td 1
+                td
+                  a(href='#') 1/250 Flinders St.
+                td 1
+              tr
+                td 2
+                td 
+                  a(href='#') 19/280 Spencer St.
+                td 2
+              tr
+                td 3
+                td 
+                  a(href='#') 25 Owens St.
+                td 2
     .panel-footer
       | Read more
   // END panel

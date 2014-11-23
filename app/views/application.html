@@ -36,7 +36,9 @@
 <div class="col-lg-4">
    <!-- START credit report panel-->
    <div id="panelDemo7" ng-class="report.cssClass" class="panel">
-      <div class="panel-heading">{{report.title}} credit score</div>
+      <div class="panel-heading">
+         <h4>Credit Score: {{report.title}}</h4>
+      </div>
       <div class="panel-body">
          <p>{{report.description}}</p>
       </div>
@@ -45,22 +47,72 @@
    <!-- END panel-->
 </div>
 <div class="col-lg-4">
-   <!-- START panel-->
-   <div id="panelDemo8" class="panel panel-primary">
-      <div class="panel-heading">Primary Panel</div>
-      <div class="panel-body">
-         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+   <!-- START panel Employment-->
+   <div id="panelDemo8" class="panel panel-success">
+      <div class="panel-heading">
+         <h4>Currently Employed</h4>
       </div>
+      <div class="panel-body">
+         <div class="row row-table">
+            <div class="col-xs-12">
+               <ul class="list-unstyled">
+                  <li class="mb-sm">
+                     <em class="fa fa-clock-o fa-fw"></em>Since March 2011</li>
+                  <li class="mb-sm">
+                     <em class="fa fa-map-marker fa-fw"></em>Vodafone, Sydney</li>
+                  <li class="mb-sm">
+                     <em class="fa fa-user fa-fw"></em>Reference: Mr Andrews</li>
+                  <li class="mb-sm">
+                     <em class="fa fa-phone fa-fw"></em>0435806802</li>
+                  <li class="mb-sm">
+                     <em class="fa fa-envelope fa-fw"></em>asdasd@mail.com</li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <!-- END widget-->
       <div class="panel-footer">Read More</div>
    </div>
    <!-- END panel-->
 </div>
 <div class="col-lg-4">
    <!-- START panel-->
-   <div id="panelDemo9" class="panel panel-success">
-      <div class="panel-heading">Success Panel</div>
+   <div id="panelDemo9" class="panel panel-warning">
+      <div class="panel-heading">
+         <h4>Rental History</h4>
+      </div>
       <div class="panel-body">
-         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+         <div class="table-responsive">
+            <table class="table table-striped">
+               <thead>
+                  <tr>
+                     <th>#</th>
+                     <th>Address</th>
+                     <th>Months</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>1</td>
+                     <td><a href="#">1/250 Flinders St.</a>
+                     </td>
+                     <td>1</td>
+                  </tr>
+                  <tr>
+                     <td>2</td>
+                     <td> <a href="#">19/280 Spencer St.</a>
+                     </td>
+                     <td>2</td>
+                  </tr>
+                  <tr>
+                     <td>3</td>
+                     <td> <a href="#">25 Owens St.</a>
+                     </td>
+                     <td>2</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
       </div>
       <div class="panel-footer">Read more</div>
    </div>
