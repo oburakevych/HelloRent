@@ -6253,7 +6253,7 @@ body {
 }
 .topnavbar .navbar-header .brand-logo-collapsed {
   display: none;
-  padding: 6px 15px;
+  padding: 15px 15px;
 }
 .topnavbar .navbar-nav > li > a,
 .topnavbar .navbar-nav > .open > a {

@@ -34,13 +34,13 @@
 // START row
 .row
 .col-lg-4
-  // START panel
-  #panelDemo7.panel(ng-class="{'panel-success': application.creditScore > 600, 'panel-warning': application.creditScore <= 600}")
+  // START credit report panel
+  #panelDemo7.panel(ng-class="report.cssClass")
     .panel-heading
-      | Credit Score
+      | {{report.title}} credit score
     .panel-body
       p
-        | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.
+        | {{report.description}}
     .panel-footer
       | Read More
   // END panel

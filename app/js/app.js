@@ -214,6 +214,44 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
       },
     };
 
+    App.creditReport = {
+        BELOW_AVERAGE : {
+            title: "Below Average",
+            min: 0,
+            max: 509,
+            cssClass: "panel-danger",
+            description: "Below Average credit score means this tenant is in the bottom 20% of credit-active population, suggesting it's MORE LIKELY that he/she will incur an adverse event such as a default, bankruptcy or court judgment in the next 12 months."
+        },        
+        AVERAGE : {
+            title: "Average",
+            min: 510,
+            max: 621,
+            cssClass: "panel-warning",
+            description: "Average credit score suggests it's LIKELY thit tenant will incur an adverse event such as a default, bankruptcy or court judgment in the next 12 months."
+        },
+        GOOD : {
+            title: "Good",
+            min: 622,
+            max: 725,
+            cssClass: "panel-success",
+            description: "Good credit score suggests it's LESS LIKELY this tenant will incur an adverse event that could harm his/her credit report in the next 12 months. Tenant's odds of keeping a clean credit report over this period are better than average credit-active population."
+        },
+        VERY_GOOD : {
+            title: "Very good",
+            min: 726,
+            max: 832,
+            cssClass: "panel-success",
+            description: "Very good credit score suggests it's UNLIKELY that this tenant will incur an adverse event in the next 12 months that could harm his/her credit report. Tenant's odds of keeping a clean credit report are 2 times better than average credit-active population."
+        },
+        EXCELLENT : {
+            title: "Excellent",
+            min: 833,
+            max: 100000,
+            cssClass: "panel-primary",
+            description: "Excellent credit score means this tenant is in the top 20% of credit-active population, suggesting it’s HIGHLY UNLIKELY that an adverse event could harm his/her credit report in the next 12 months. Tenant's odds of keeping a clean file are 5 times better than average population."
+        },
+    }
+
   // defaults to dashboard
   $urlRouterProvider.otherwise('/app/applications');
 
@@ -232,7 +270,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         url: '/applications',
         title: 'Applications',
         templateUrl: basepath('applications.html'),
-        resolve: resolveFor('flot-chart','flot-chart-plugins'),
+        resolve: resolveFor('flot-chart','flot-chart-plugins', 'firebase'),
         controller: 'ApplicationsController'
     })
     .state('app.view-application', {
@@ -745,9 +783,11 @@ App.controller('RegisterFormController', ['$scope', '$http', '$state', function(
  * Module: notifications.js
  * Initializes the notifications system
  =========================================================*/
-App.controller('ApplicationsController', ['$scope', '$rootScope', function($scope, $rootScope){
+App.controller('ApplicationsController', ['$scope', '$rootScope', '$firebase', function($scope, $rootScope, $firebase){
 
    $scope.applications = App.applications;
+   console.log("testit");
+   console.log($firebase);
 
 }]);
 
@@ -763,14 +803,22 @@ App.controller('ApplicationsController', ['$scope', '$rootScope', function($scop
 
 
 App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams){
-
   console.log($stateParams);
+  var application = App.applications[$stateParams.id];
 
-    var application = App.applications[$stateParams.id];
+  $scope.application = application;
 
-    $scope.application = application;
+  $scope.getCreditReport = function(score) {
+  	angular.forEach(App.creditReport, function(report, key) {
+  		if (report.min <= score && report.max >= score) {
+  			$scope.report = report;
+  		}
+  	});
+  }
 
-    console.log(application);
+  if ($scope.application) {
+  	$scope.getCreditReport($scope.application.creditScore);
+  }
 
 }]);
 /**=========================================================
