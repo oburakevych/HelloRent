@@ -2,30 +2,18 @@
  * Module: notifications.js
  * Initializes the notifications system
  =========================================================*/
-App.controller('ApplicationsController', ['$scope', '$rootScope', '$firebase', function($scope, $rootScope, $firebase){
+App.controller('ApplicationsController', ['$scope', '$rootScope', '$firebase', "$timeout", function($scope, $rootScope, $firebase, $timeout){
+  var ref = new Firebase("hello-rent.firebaseio.com");
+  var sync = $firebase(ref.child("applications").child("-Jbb-UeW00OMOezdohqY"));
 
-   $scope.applications = App.applications;
-   console.log("testit");
-   console.log($firebase);
-
+  $rootScope.applications = sync.$asObject();
 }]);
-
-
-
-
-
-
-
-
-
-
 
 
 App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams){
   console.log($stateParams);
-  var application = App.applications[$stateParams.id];
 
-  $scope.application = application;
+  $scope.application = $rootScope.applications[$stateParams.id];
 
   $scope.getCreditReport = function(score) {
   	angular.forEach(App.creditReport, function(report, key) {
@@ -38,5 +26,4 @@ App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams',
   if ($scope.application) {
   	$scope.getCreditReport($scope.application.creditScore);
   }
-
 }]);
