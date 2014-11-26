@@ -4,13 +4,14 @@
  =========================================================*/
 App.controller('ApplicationsController', ['$scope', '$rootScope', '$firebase', "$timeout", function($scope, $rootScope, $firebase, $timeout){
   var ref = new Firebase("hello-rent.firebaseio.com");
-  var sync = $firebase(ref.child("applications").child("-Jbb-UeW00OMOezdohqY"));
+  var sync = $firebase(ref.child("applications"));
 
   $rootScope.applications = sync.$asObject();
+
 }]);
 
 
-App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams){
+App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams', '$firebase', function($scope, $rootScope, $stateParams, $firebase){
   console.log($stateParams);
 
   $scope.application = $rootScope.applications[$stateParams.id];

@@ -75,145 +75,6 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     modules: appRequires.modules
   });
 
-
-
-  App.applications = {
-      "657890860" : {
-        "DOB" : "10/02/82",
-        "age": 32,
-        "addresses" : [ {
-          "line1" : "121/256 Flinders St",
-          "postCode" : 3000,
-          "type" : "current"
-        } ],
-        "criminalOffences" : {
-          "criminalOffence" : "yes",
-          "details" : "Parking ticket"
-        },
-        "email" : "oburakevych@gmail.com",
-        "employmentDetails" : {
-          "isEmployed" : "Yes",
-          "position": "Junior developer"
-        },
-        "bankruptcy" : {
-          "hasFiledBankruptcy": false
-        },
-        "firstName" : "Jane",
-        "gender" : "f",
-        "identity" : {
-          "passportNumber" : 4456789
-        },
-        "lastName" : "Brown",
-        "image": "app/img/user/09.jpg",
-        "pets" : "no",
-        "phone" : "098765431",
-        "references" : [ {
-          "name" : "Mr Smith",
-          "relationship" : "manager"
-        } ],
-        "refusedRent" : "no",
-        "smoker" : "yes",
-        "social": {
-          "facebook" : "facebook_username"
-        },
-        "creditScore": 587,
-        "income": {
-            "amount": 2000,
-            "type": "week",
-            "currency": "AUD" 
-        }
-      },
-      "757890860" : {
-        "DOB" : "11/11/78",
-        "age": 36,
-        "addresses" : [ {
-          "line1" : "16 Ovens St",
-          "postCode" : 3039,
-          "type" : "current"
-        } ],
-        "criminalOffences" : {
-          "criminalOffence" : "no",
-          "details" : ""
-        },
-        "email" : "silvia@oxford.com",
-        "employmentDetails" : {
-          "isEmployed" : "Yes"
-        },
-        "bankruptcy" : {
-          "hasFiledBankruptcy": false
-        },
-        "firstName" : "Silvia",
-        "image": "app/img/user/08.jpg",
-        "gender" : "f",
-        "identity" : {
-          "passportNumber" : 856781
-        },
-        "lastName" : "Crown",
-        "pets" : "no",
-        "phone" : "048715105",
-        "references" : [ {
-          "name" : "Mr Arnold Clone",
-          "relationship" : "manager"
-        } ],
-        "refusedRent" : "no",
-        "smoker" : "no",
-        "social": {
-          "facebook" : "facebook_username"
-        },
-        "creditScore": 882,
-        "income": {
-            "amount": 6900,
-            "type": "month",
-            "currency": "AUD" 
-        }
-      },
-      "857892860" : {
-        "DOB" : "14/08/82",
-        "age": 32,
-        "addresses" : [ {
-          "line1" : "24 Hunters St",
-          "postCode" : 3020,
-          "type" : "current"
-        } ],
-        "criminalOffences" : {
-          "criminalOffence" : "no",
-          "details" : ""
-        },
-        "email" : "lindon.grey@gmail.com",
-        "employmentDetails" : {
-          "isEmployed" : "Yes",
-          "position": "Student"
-        },
-        "bankruptcy" : {
-          "hasFiledBankruptcy": false
-        },
-        "firstName" : "Lindon",
-        "gender" : "m",
-        "identity" : {
-          "passportNumber" : 2653719
-        },
-        "lastName" : "Grey",
-        "image": "app/img/user/10.jpg",
-        "pets" : "no",
-        "phone" : "046665431",
-        "references" : [ {
-          "name" : "Mr Alex Lee",
-          "relationship" : "manager"
-        } ],
-        "refusedRent" : "no",
-        "smoker" : "yes",
-        "social": {
-          "facebook" : "facebook_username"
-        },
-        "creditScore": 764,
-        "income": {
-            "amount": 5880,
-            "type": "month",
-            "currency": "AUD" 
-        }
-      },
-    };
-
     App.creditReport = {
         BELOW_AVERAGE : {
             title: "Below Average",
@@ -785,13 +646,14 @@ App.controller('RegisterFormController', ['$scope', '$http', '$state', function(
  =========================================================*/
 App.controller('ApplicationsController', ['$scope', '$rootScope', '$firebase', "$timeout", function($scope, $rootScope, $firebase, $timeout){
   var ref = new Firebase("hello-rent.firebaseio.com");
-  var sync = $firebase(ref.child("applications").child("-Jbb-UeW00OMOezdohqY"));
+  var sync = $firebase(ref.child("applications"));
 
   $rootScope.applications = sync.$asObject();
+
 }]);
 
 
-App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams){
+App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams', '$firebase', function($scope, $rootScope, $stateParams, $firebase){
   console.log($stateParams);
 
   $scope.application = $rootScope.applications[$stateParams.id];
