@@ -8,6 +8,8 @@ App.controller('AppController',
   function($rootScope, $scope, $state, $translate, $window, $localStorage, $timeout, toggle, colors, browser, cfpLoadingBar) {
     "use strict";
 
+    console.log("AppController");
+
     // Loading bar transition
     // ----------------------------------- 
     var thBar;

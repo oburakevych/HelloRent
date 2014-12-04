@@ -1,0 +1,45 @@
+<div ng-controller="RegisterFormController" class="block-center mt-xl wd-xl">
+   <!-- START panel-->
+   <div class="panel panel-dark panel-flat">
+      <div class="panel-heading text-center">
+         <a href="#">
+            <img src="app/img/logo-1-w2000.png" alt="HelloRent logo" class="block-center img-rounded" />
+         </a>
+      </div>
+      <div class="panel-body">
+         <p class="text-center pv">SIGNUP TO GET INSTANT ACCESS.</p>
+         <form role="form" validate-form="" novalidate="" ng-submit="register()" class="mb-lg">
+            <div class="form-group has-feedback">
+               <label for="signupInputFirstName" class="text-muted">First name</label>
+               <input id="signupInputFirstName" type="text" placeholder="Enter name" autocomplete="off" ng-model="account.firstName" required="required" class="form-control" />
+               <span class="fa fa-pencil form-control-feedback text-muted"></span>
+            </div>
+            <div class="form-group has-feedback">
+               <label for="signupInputEmail1" class="text-muted">Email address</label>
+               <input id="signupInputEmail1" type="email" placeholder="Enter email" autocomplete="off" ng-model="account.email" required="required" class="form-control" />
+               <span class="fa fa-envelope form-control-feedback text-muted"></span>
+            </div>
+            <div class="form-group has-feedback">
+               <label for="signupInputPassword1" class="text-muted">Password</label>
+               <input id="signupInputPassword1" type="password" placeholder="Password" autocomplete="off" ng-model="account.password" required="required" class="form-control" />
+               <span class="fa fa-lock form-control-feedback text-muted"></span>
+            </div>
+            <div class="clearfix"></div>
+            <button type="submit" class="btn btn-block btn-primary mt-lg">Create account</button>
+            <p class="pt-lg mt0 fa fa-check text-center">By creating an account you agree to HelloRent's <a href="#">Terms of Service</a>
+            </p>
+         </form>
+         <div ng-show="authMsg" class="alert alert-danger text-center">{{authMsg}}</div>
+         <p class="pt-lg text-center">Have an account?</p><a ui-sref="secure.login" class="btn btn-block btn-default">Signin</a>
+      </div>
+   </div>
+   <!-- END panel-->
+   <div class="p-lg text-center">
+      <span>&copy;</span>
+      <span ng-bind="app.year"></span>
+      <span>-</span>
+      <span ng-bind="app.name"></span>
+      <br/>
+      <span ng-bind="app.description"></span>
+   </div>
+</div>

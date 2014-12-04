@@ -1,5 +1,8 @@
 @charset "UTF-8";
 @import url(//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,400italic);
+@import "../../vendor/fontawesome/css/font-awesome.min.css";
+@import "../../vendor/simplelineicons/simple-line-icons.css";
+@import "../../vendor/csspinner/csspinner.min.css";
 /*!
  * 
  * HelloRent

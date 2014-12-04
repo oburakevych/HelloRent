@@ -36,9 +36,10 @@
   "sidebar": {
     "WELCOME": "Welcome",
     "heading": {
-      "HEADER": "Main Navigation",
-      "COMPONENTS": "Components",
-      "MORE": "More"
+      "HEADER": "MAIN NAVIGATION",
+      "COMPONENTS": "COMPONENTS",
+      "MORE": "MORE",
+      "USER_OPTIONS": "USER OPTIONS"
     },
     "nav": {
       "DASHBOARD": "Dashboard",
@@ -46,6 +47,7 @@
       "WIDGETS": "Widgets",
       "WIDGETS": "Widgets",
       "DOCUMENTATION": "Documentation",
+      "LOGOUT": "Logout",
       "element": {
         "ELEMENTS": "Elements",
         "BUTTON": "Button",

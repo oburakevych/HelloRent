@@ -72,7 +72,14 @@ var vendorBaseScripts = [
   '../vendor/loadingbar/loading-bar.js',
   // Firebase
   '../vendor/firebase/firebase.min.js',
-  '../vendor/firebase/angularfire.js'
+  '../vendor/firebase/angularfire.js',
+  '../vendor/fastclick/fastclick.js',
+  '../vendor/modernizr/modernizr.js',
+  '../vendor/skycons/skycons.js',
+  '../vendor/screenfull/screenfull.min.js',
+  '../vendor/animo/animo.min.js',
+  '../vendor/sparklines/jquery.sparkline.min.js',
+  '../vendor/slimscroll/jquery.slimscroll.min.js',
 ];
 
 // SOURCES CONFIG 
@@ -84,7 +91,9 @@ var source = {
               'js/modules/directives/*.js',
               'js/modules/services/*.js',
               'js/modules/filters/*.js',
-              'js/custom/**/*.js',
+              
+              'js/hellorent/**/*.js',
+              
               ignored_files
             ],
     vendor: vendorBaseScripts,
@@ -99,9 +108,9 @@ var source = {
         files : ['jade/views/*.jade', 'jade/views/**/*.jade', ignored_files],
         watch: ['jade/views/*.jade', 'jade/views/**/*.jade']
     },
-    pages: {
-        files : ['jade/pages/*.jade'],
-        watch: ['jade/pages/*.jade']
+    secure: {
+        files : ['jade/secure/*.jade'],
+        watch: ['jade/secure/*.jade']
     }
   },
   styles: {
@@ -139,7 +148,7 @@ var build = {
   templates: {
     app: '..',
     views: '../app/views',
-    pages: '../app/pages'
+    secure: '../app/secure'
   }
 };
 
@@ -232,9 +241,9 @@ gulp.task('templates:app', function() {
 });
 
 // JADE
-gulp.task('templates:pages', function() {
-    return gulp.src(source.templates.pages.files)
-        .pipe(changed(build.templates.pages, { extension: '.html' }))
+gulp.task('templates:secure', function() {
+    return gulp.src(source.templates.secure.files)
+        .pipe(changed(build.templates.secure, { extension: '.html' }))
         .pipe(jade())
         .on("error", handleError)
         .pipe(prettify({
@@ -246,7 +255,7 @@ gulp.task('templates:pages', function() {
         //     customPrefixes: ['ui-']
         // }))
         // .pipe(w3cjs( W3C_OPTIONS ))
-        .pipe(gulp.dest(build.templates.pages))
+        .pipe(gulp.dest(build.templates.secure))
         ;
 });
 
@@ -281,7 +290,7 @@ gulp.task('watch', function() {
   gulp.watch(source.styles.app.watch,        ['styles:app', 'styles:app:rtl']);
   gulp.watch(source.styles.themes.watch,     ['styles:themes']);
   gulp.watch(source.bootstrap.watch,         ['styles:app']); //bootstrap
-  gulp.watch(source.templates.pages.watch,   ['templates:pages']);
+  gulp.watch(source.templates.secure.watch,   ['templates:secure']);
   gulp.watch(source.templates.views.watch,   ['templates:views']);
   gulp.watch(source.templates.app.watch,     ['templates:app']);
 
@@ -306,7 +315,7 @@ gulp.task('default', [
           'styles:app:rtl',
           'styles:themes',
           'templates:app',
-          'templates:pages',
+          'templates:secure',
           'templates:views',
           'watch'
         ]);

@@ -3,7 +3,7 @@
   .panel.panel-dark.panel-flat
     .panel-heading.text-center
       a(href="#")
-        img.block-center.img-rounded(src='app/img/logo.png', alt='Image')
+        img.block-center.img-rounded(src='app/img/logo-1-w2000.png', alt='Image')
     .panel-body
       p.text-center.pv SIGN IN TO CONTINUE.
       form(role='form', ng-submit="login()", validate-form='', novalidate='').mb-lg
@@ -14,11 +14,6 @@
           input#exampleInputPassword1.form-control(type='password', placeholder='Password', ng-model="account.password", required)
           span.fa.fa-lock.form-control-feedback.text-muted
         .clearfix
-          .checkbox.c-checkbox.pull-left.mt0
-            label
-              input(type='checkbox', value='', name="remember", ng-model="account.remember")
-              span.fa.fa-check
-              |  Remember Me
           .pull-right
             a.text-muted(ui-sref="page.recover") Forgot your password?
         
@@ -26,7 +21,7 @@
       
       .alert.alert-danger.text-center(ng-show='authMsg') {{authMsg}}
       p.pt-lg.text-center Need to Signup?
-      a(ui-sref="page.register").btn.btn-block.btn-default Register Now
+      a(ui-sref="secure.register").btn.btn-block.btn-default Register Now
   // END panel
   .p-lg.text-center
     span &copy; 

@@ -2,13 +2,10 @@
  * Module: notifications.js
  * Initializes the notifications system
  =========================================================*/
-App.controller('ApplicationsController', ['$scope', '$rootScope', '$firebase', "$timeout", function($scope, $rootScope, $firebase, $timeout){
-  var ref = new Firebase("hello-rent.firebaseio.com");
-  var sync = $firebase(ref.child("applications"));
-  
-  $rootScope.applications = sync.$asObject();
+App.controller('ApplicationsController', ['$scope', '$rootScope', '$firebase', "$timeout", 'applicationService', function($scope, $rootScope, $firebase, $timeout, applicationService){
+  console.log($rootScope.authUser);
+  $rootScope.applications = applicationService.$asObject();
 }]);
-
 
 App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams', '$firebase', function($scope, $rootScope, $stateParams, $firebase) {
   console.log($stateParams);

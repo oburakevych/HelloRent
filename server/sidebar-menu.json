@@ -6,8 +6,19 @@
   },
   {
     "text": "Applications",
-    "sref": "app.dashboard",
+    "sref": "app.applications",
     "icon": "icon-note",
     "translate": "sidebar.nav.APPLICATIONS"
+  },
+  {
+    "text": "User options",
+    "heading": "true",
+    "translate": "sidebar.heading.USER_OPTIONS"
+  },
+  {
+    "text": "Logout",
+    "sref": "secure.logout",
+    "icon": "icon-logout",
+    "translate": "sidebar.nav.LOGOUT"
   }
 ]
