@@ -3,7 +3,7 @@
    <div class="panel panel-dark panel-flat">
       <div class="panel-heading text-center">
          <a href="#">
-            <img src="app/img/logo-1-w2000.png" alt="HelloRent logo" class="block-center img-rounded" />
+            <img src="app/img/logo-1-w158x50.png" alt="HelloRent logo" class="block-center img-rounded" />
          </a>
       </div>
       <div class="panel-body">
@@ -26,8 +26,10 @@
             </div>
             <div class="clearfix"></div>
             <button type="submit" class="btn btn-block btn-primary mt-lg">Create account</button>
-            <p class="pt-lg mt0 fa fa-check text-center">By creating an account you agree to HelloRent's <a href="#">Terms of Service</a>
-            </p>
+            <div class="mt0">
+               <p class="pt-lg text-center">By creating an account you agree to HelloRent's <a href="#">Terms of Service</a>
+               </p>
+            </div>
          </form>
          <div ng-show="authMsg" class="alert alert-danger text-center">{{authMsg}}</div>
          <p class="pt-lg text-center">Have an account?</p><a ui-sref="secure.login" class="btn btn-block btn-default">Signin</a>

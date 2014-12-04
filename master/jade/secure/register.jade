@@ -3,7 +3,7 @@
   .panel.panel-dark.panel-flat
     .panel-heading.text-center
       a(href="#")
-        img.block-center.img-rounded(src='app/img/logo-1-w2000.png', alt='HelloRent logo')
+        img.block-center.img-rounded(src='app/img/logo-1-w158x50.png', alt='HelloRent logo')
     .panel-body
       p.text-center.pv SIGNUP TO GET INSTANT ACCESS.
       form(role='form', validate-form='', novalidate='', ng-submit="register()").mb-lg
@@ -23,9 +23,10 @@
         
         button.btn.btn-block.btn-primary.mt-lg(type='submit') Create account
 
-        p.pt-lg.mt0.fa.fa-check.text-center
-            |  By creating an account you agree to HelloRent's 
-            a(href="#") Terms of Service
+        div.mt0
+            p.pt-lg.text-center
+              |  By creating an account you agree to HelloRent's 
+              a(href="#") Terms of Service
       
       .alert.alert-danger.text-center(ng-show='authMsg') {{authMsg}}      
       
