@@ -1,18 +1,18 @@
 <h3>Applications
    <small>Screen your applicants</small>
 </h3>
-<div class="row">
-   <div ng-repeat="(applicationId, application) in applications " class="col-lg-4">
+<div ng-repeat="(tenantId, tenants) in applications" class="row">
+   <div ng-repeat="(applicationId, application) in tenants" class="col-lg-4">
       <!-- START widget-->
       <div class="panel widget">
          <div class="half-float">
             <div style="height: 80px;"></div>
             <div class="half-float-bottom">
-               <img ng-src="{{application.image}}" alt="Image" class="img-thumbnail img-circle thumb128" />
+               <img ng-src="{{application.image}}" class="img-thumbnail img-circle thumb128" />
             </div>
          </div>
          <div class="panel-body text-center">
-            <a ui-sref="app.view-application({id: applicationId})">
+            <a ui-sref="app.view-application({'tenantId': tenantId, 'applicationId': applicationId})">
                <h3 class="m0">{{application.firstName}} {{application.lastName}}, {{application.age}}</h3>
             </a>
             <p class="text-muted">{{application.phone}} | {{application.email}}</p>

@@ -121,7 +121,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         controller: 'ApplicationsController'
     })
     .state('app.view-application', {
-        url: '/applications/:id',
+        url: '/tenant/:tenantId/applications/:applicationId',
         title: 'Application',
         templateUrl: basepath('application.html'),
         controller: 'ApplicationController'
@@ -4394,18 +4394,54 @@ helloRentApp
  .constant('FIREBASE_URL', 'hello-rent.firebaseio.com')
 ;
 /**=========================================================
+ * Module: application.js
+ * Services to find applications
+ =========================================================*/
+ 
+helloRentApp.service('applicationService', ['$firebase', 'firebaseReference', '$log', function($firebase, firebaseReference, $log) {
+  return {
+  	get: function(propertyId) {
+  		$log.debug(propertyId);
+  		return $firebase(firebaseReference
+  							.child("properties")
+  							.child(propertyId)
+  							.child("applications"))
+  							.$asObject();
+  	}
+  }
+}]);
+/**=========================================================
  * Module: notifications.js
  * Initializes the notifications system
  =========================================================*/
-App.controller('ApplicationsController', ['$scope', '$rootScope', '$firebase', "$timeout", 'applicationService', function($scope, $rootScope, $firebase, $timeout, applicationService){
-  console.log($rootScope.authUser);
-  //$rootScope.applications = applicationService.$asObject();
+App.controller('ApplicationsController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout", 'applicationService', 
+                  function($scope, $rootScope, $log, $firebase, $timeout, applicationService){
+
+  $rootScope.authUser.$loaded()
+    .then(function() {
+      $scope.getAllApplications();
+    });
+
+  $scope.getAllApplications = function() {
+    $log.debug($rootScope.authUser);
+    $rootScope.applications = [];
+
+    var propertyIds = $rootScope.authUser.properties;
+    if (propertyIds) {
+      angular.forEach(propertyIds, function(propertyId) {
+        $rootScope.applications = applicationService.get(propertyId);
+      });  
+    }
+    $timeout(function() {
+      $log.debug($rootScope.applications);
+    }, 3000);
+  }
 }]);
 
 App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams', '$firebase', function($scope, $rootScope, $stateParams, $firebase) {
   console.log($stateParams);
 
-  $scope.application = $rootScope.applications[$stateParams.id];
+  $scope.application = $rootScope.applications[$stateParams.tenantId][$stateParams.applicationId];
   
   var ref = new Firebase("hello-rent.firebaseio.com");
   $scope.CREDIT_SCORE = $firebase(ref.child("creditScore")).$asObject();
@@ -4421,16 +4457,6 @@ App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams',
   $scope.CREDIT_SCORE.$loaded().then(function() {
     $scope.getCreditReport($scope.application.creditScore);
   });
-}]);
-/**=========================================================
- * Module: application.js
- * Services to find applications
- =========================================================*/
- 
-helloRentApp.service('applicationService', ['$firebase', 'firebaseReference', function($firebase, firebaseReference) {
-  var applications = $firebase(firebaseReference.child("applications"));
-  
-  return applications;
 }]);
 /**=========================================================
  * Module: access-login.js

@@ -11,15 +11,15 @@
         //  label.text-muted 
         //    span(ng-click="registerWith('facebook')") Sign in with Facebook
         .form-group.has-feedback
-          label.text-muted(for='signupInputFirstName') First name
+          //label.text-muted(for='signupInputFirstName') First name
           input#signupInputFirstName.form-control(type='text', placeholder='Enter name', autocomplete="off", ng-model="account.firstName", required)
           span.fa.fa-pencil.form-control-feedback.icons-clear-fix.text-muted
         .form-group.has-feedback
-          label.text-muted(for='signupInputEmail1') Email address
+          //label.text-muted(for='signupInputEmail1') Email address
           input#signupInputEmail1.form-control(type='email', placeholder='Enter email', autocomplete="off", ng-model="account.email", required)
           span.fa.fa-envelope.form-control-feedback.icons-clear-fix.text-muted
         .form-group.has-feedback
-          label.text-muted(for='signupInputPassword1') Password
+          //label.text-muted(for='signupInputPassword1') Password
           input#signupInputPassword1.form-control(type='password', placeholder='Password', autocomplete="off", ng-model="account.password", required)
           span.fa.fa-lock.form-control-feedback.text-muted
         .clearfix

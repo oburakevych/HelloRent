@@ -1,16 +1,16 @@
 h3 Applications
   small Screen your applicants
 
-.row
-  .col-lg-4(ng-repeat='(applicationId, application) in applications ')
+.row(ng-repeat='(tenantId, tenants) in applications')
+  .col-lg-4(ng-repeat='(applicationId, application) in tenants')
     // START widget
     .panel.widget
       .half-float
         div(style="height: 80px;")
         .half-float-bottom
-          img.img-thumbnail.img-circle.thumb128(ng-src='{{application.image}}', alt="Image")
+          img.img-thumbnail.img-circle.thumb128(ng-src='{{application.image}}')
       .panel-body.text-center
-        a(ui-sref="app.view-application({id: applicationId})")
+        a(ui-sref="app.view-application({'tenantId': tenantId, 'applicationId': applicationId})")
           h3.m0 {{application.firstName}} {{application.lastName}}, {{application.age}}
           
         p.text-muted {{application.phone}} | {{application.email}}
