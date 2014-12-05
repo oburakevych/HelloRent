@@ -1,32 +1,36 @@
 h3 Applications
   small Screen your applicants
 
-.row(ng-repeat='(tenantId, tenants) in applications')
-  .col-lg-4(ng-repeat='(applicationId, application) in tenants')
-    // START widget
-    .panel.widget
-      .half-float
-        div(style="height: 80px;")
-        .half-float-bottom
-          img.img-thumbnail.img-circle.thumb128(ng-src='{{application.image}}')
-      .panel-body.text-center
-        a(ui-sref="app.view-application({'tenantId': tenantId, 'applicationId': applicationId})")
-          h3.m0 {{application.firstName}} {{application.lastName}}, {{application.age}}
+.row
+  div(ng-repeat='(tenantId, tenants) in applications')
+    .col-lg-4(ng-repeat='(applicationId, application) in tenants')
+      // START widget
+      .panel.widget
+        .half-float
+          div(style="height: 80px;")
+          .half-float-bottom
+            img.img-thumbnail.img-circle.thumb128(ng-src='{{application.image}}')
+        .panel-body.text-center
+          a(ui-sref="app.view-application({'tenantId': tenantId, 'applicationId': applicationId})")
+            h3.m0 {{application.firstName}} {{application.middleName}} {{application.lastName}}, {{application.age}}
+            
+          p.text-muted {{application.phone}} | {{application.email}}
           
-        p.text-muted {{application.phone}} | {{application.email}}
-        
-      .panel-body.text-center.bg-gray-dark
-        .row.row-table
-          .col-xs-4
-            h3.m0 {{application.creditScore}}
-            p.m0 Credit Score
-          .col-xs-4
-            h3.m0 ${{application.income.amount}}
-            p.m0 Salary
-          .col-xs-4
-            h3.m0 {{application.employmentDetails.isEmployed}}
-            p.m0 Employed
-    // END widget
-  .col-lg-4
+        .panel-body.text-center.bg-gray-dark
+          .row.row-table
+            .col-xs-4
+              h3.m0(ng-if="application.creditScore > 0") {{application.creditScore}}
+              h3.m0(ng-if="application.creditScore < 0") ?
+              p.m0 Credit Score
+            .col-xs-4
+              h3.m0 ${{application.income.amount}}
+                span(ng-show="application.income.type")
+                  |/{{application.income.type}}
+              p.m0 Salary
+            .col-xs-4
+              h3(ng-show="application.employmentDetails.isEmployed").m0 Yes
+              h3(ng-hide="application.employmentDetails.isEmployed").m0 No
+              p.m0 Employed
+      // END widget
 // END row
 // END panel tab

@@ -1,33 +1,24 @@
 .unwrap
   .bg-cover(style="background-image: url(app/img/profile-bg.jpg)")
     .p-xl.text-center.text-white
-      img.img-thumbnail.img-circle.thumb128(ng-src='{{application.image}}', alt="Image")
+      img.img-thumbnail.img-circle.thumb128(ng-src='{{application.image}}')
       h3.m0 {{application.firstName}} {{application.lastName}}
-      p Age {{application.age}}
+      p Age {{application.age}}, Smoker, Has Pets.
       p {{application.phone}} | {{application.email}}
-
-
-      button.btn.btn-labeled.btn-success(type='button')
-        span.btn-label
-          i.fa.fa-check
-        | Approve
-      // Danger button with label 
-      button.btn.btn-labeled.btn-danger(type='button')
-        span.btn-label
-          i.fa.fa-times
-        | Decline
 
 
   .text-center.bg-gray-dark.p-lg.mb-xl
     .row.row-table
       .col-xs-4
-        h3.m0 {{application.creditScore}}
+        h3.m0(ng-if="application.creditScore > 0") {{application.creditScore}}
+        h3.m0(ng-if="application.creditScore < 0") ?
         p.m0 Credit Score
       .col-xs-4
         h3.m0 ${{application.income.amount}}
         p.m0 Salary
       .col-xs-4
-        h3.m0 {{application.employmentDetails.isEmployed}}
+        h3(ng-show="application.employmentDetails.isEmployed").m0 Yes
+        h3(ng-hide="application.employmentDetails.isEmployed").m0 No
         p.m0 Employed
 
 
@@ -41,10 +32,11 @@
     .panel-body
       p
         | {{report.description}}
-    .panel-footer
-      | Read More
+    //.panel-footer
+      //| Read More
   // END panel
-.col-lg-4
+
+div(ng-show="application.employmentDetails.isEmployed").col-lg-4
   // START panel Employment
   #panelDemo8.panel.panel-success
     .panel-heading
@@ -55,28 +47,46 @@
             ul.list-unstyled
               li.mb-sm
                 em.fa.fa-clock-o.fa-fw
-                |  Since March 2011
+                |  {{application.employmentDetails.position}} since {{application.employmentDetails.startDate}}
               li.mb-sm
                 em.fa.fa-map-marker.fa-fw
-                |  Vodafone, Sydney
+                |  {{application.employmentDetails.company}}
               li.mb-sm
                 em.fa.fa-user.fa-fw
-                | Reference: Mr Andrews
+                | Reference: {{application.employmentDetails.references[0].name}}
               li.mb-sm
                 em.fa.fa-phone.fa-fw
-                |  0435806802
-              li.mb-sm
-                em.fa.fa-envelope.fa-fw
-                |  asdasd@mail.com
+                |  {{application.employmentDetails.references[0].phoneNumber}}
+          
 
     // END widget
 
-    .panel-footer
-      | Read More
+    //.panel-footer
+      //| Read More
   // END panel
+
+div(ng-show="!application.employmentDetails.isEmployed").col-lg-4
+  // START panel Employment
+  #panelDemo8.panel.panel-warning
+    .panel-heading
+      h4 Currently Unemployed
+    .panel-body
+        .row.row-table
+          .col-xs-12
+            ul.list-unstyled
+              li.mb-sm
+                p Details: {{application.employmentDetails.message}}
+
+    // END widget
+
+    //.panel-footer
+      //| Read More
+  // END panel
+
+
 .col-lg-4
   // START panel
-  #panelDemo9.panel.panel-warning
+  #panelDemo9.panel.panel-primary
     .panel-heading
       h4 Rental History
     .panel-body
@@ -85,17 +95,13 @@
             tbody
               tr
                 td
-                  a(href='#') 1/250 Flinders St.
-                td 3 Months
+                  p 9 Power st., St.Albans, 3021 VIC (9 months)
+                
               tr
-                td 
-                  a(href='#') 19/280 Spencer St.
-                td 2 Months
-              tr
-                td 
-                  a(href='#') 25 Owens St.
-                td 4 Months
-    .panel-footer
-      | Read more
+                td
+                  p 50 Grampians way, Caroline Springs, 3023 VIC (2 years)
+
+    //.panel-footer
+      //| Read more
   // END panel
 // END row

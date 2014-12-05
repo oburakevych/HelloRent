@@ -1,42 +1,47 @@
 <h3>Applications
    <small>Screen your applicants</small>
 </h3>
-<div ng-repeat="(tenantId, tenants) in applications" class="row">
-   <div ng-repeat="(applicationId, application) in tenants" class="col-lg-4">
-      <!-- START widget-->
-      <div class="panel widget">
-         <div class="half-float">
-            <div style="height: 80px;"></div>
-            <div class="half-float-bottom">
-               <img ng-src="{{application.image}}" class="img-thumbnail img-circle thumb128" />
-            </div>
-         </div>
-         <div class="panel-body text-center">
-            <a ui-sref="app.view-application({'tenantId': tenantId, 'applicationId': applicationId})">
-               <h3 class="m0">{{application.firstName}} {{application.lastName}}, {{application.age}}</h3>
-            </a>
-            <p class="text-muted">{{application.phone}} | {{application.email}}</p>
-         </div>
-         <div class="panel-body text-center bg-gray-dark">
-            <div class="row row-table">
-               <div class="col-xs-4">
-                  <h3 class="m0">{{application.creditScore}}</h3>
-                  <p class="m0">Credit Score</p>
-               </div>
-               <div class="col-xs-4">
-                  <h3 class="m0">${{application.income.amount}}</h3>
-                  <p class="m0">Salary</p>
-               </div>
-               <div class="col-xs-4">
-                  <h3 class="m0">{{application.employmentDetails.isEmployed}}</h3>
-                  <p class="m0">Employed</p>
+<div class="row">
+   <div ng-repeat="(tenantId, tenants) in applications">
+      <div ng-repeat="(applicationId, application) in tenants" class="col-lg-4">
+         <!-- START widget-->
+         <div class="panel widget">
+            <div class="half-float">
+               <div style="height: 80px;"></div>
+               <div class="half-float-bottom">
+                  <img ng-src="{{application.image}}" class="img-thumbnail img-circle thumb128" />
                </div>
             </div>
+            <div class="panel-body text-center">
+               <a ui-sref="app.view-application({'tenantId': tenantId, 'applicationId': applicationId})">
+                  <h3 class="m0">{{application.firstName}} {{application.middleName}} {{application.lastName}}, {{application.age}}</h3>
+               </a>
+               <p class="text-muted">{{application.phone}} | {{application.email}}</p>
+            </div>
+            <div class="panel-body text-center bg-gray-dark">
+               <div class="row row-table">
+                  <div class="col-xs-4">
+                     <h3 ng-if="application.creditScore &gt; 0" class="m0">{{application.creditScore}}</h3>
+                     <h3 ng-if="application.creditScore &lt; 0" class="m0">?</h3>
+                     <p class="m0">Credit Score</p>
+                  </div>
+                  <div class="col-xs-4">
+                     <h3 class="m0">${{application.income.amount}}
+                        <span ng-show="application.income.type">/{{application.income.type}}</span>
+                     </h3>
+                     <p class="m0">Salary</p>
+                  </div>
+                  <div class="col-xs-4">
+                     <h3 ng-show="application.employmentDetails.isEmployed" class="m0">Yes</h3>
+                     <h3 ng-hide="application.employmentDetails.isEmployed" class="m0">No</h3>
+                     <p class="m0">Employed</p>
+                  </div>
+               </div>
+            </div>
          </div>
+         <!-- END widget-->
       </div>
-      <!-- END widget-->
    </div>
-   <div class="col-lg-4"></div>
 </div>
 <!-- END row-->
 <!-- END panel tab-->

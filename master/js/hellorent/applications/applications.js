@@ -2,7 +2,7 @@
  * Module: notifications.js
  * Initializes the notifications system
  =========================================================*/
-App.controller('ApplicationsController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout", 'applicationService', 
+helloRentApp.controller('ApplicationsController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout", 'applicationService', 
                   function($scope, $rootScope, $log, $firebase, $timeout, applicationService){
 
   $rootScope.authUser.$loaded()
@@ -20,19 +20,37 @@ App.controller('ApplicationsController', ['$scope', '$rootScope', '$log', '$fire
         $rootScope.applications = applicationService.get(propertyId);
       });  
     }
-    $timeout(function() {
-      $log.debug($rootScope.applications);
-    }, 3000);
   }
 }]);
 
-App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams', '$firebase', function($scope, $rootScope, $stateParams, $firebase) {
-  console.log($stateParams);
+helloRentApp.controller('ApplicationController', ['$scope', '$rootScope', '$log', 'firebaseReference', '$stateParams', '$firebase', function($scope, $rootScope, $log, firebaseReference, $stateParams, $firebase) {
+  //$log.debug($stateParams);
 
-  $scope.application = $rootScope.applications[$stateParams.tenantId][$stateParams.applicationId];
-  
-  var ref = new Firebase("hello-rent.firebaseio.com");
-  $scope.CREDIT_SCORE = $firebase(ref.child("creditScore")).$asObject();
+  $scope.getAllApplications = function() {
+    //$log.debug($rootScope.authUser);
+    $rootScope.applications = [];
+
+    var propertyIds = $rootScope.authUser.properties;
+    if (propertyIds) {
+      angular.forEach(propertyIds, function(propertyId) {
+        $rootScope.applications = applicationService.get(propertyId);
+      });
+
+      $timeout(function() {
+        $scope.getApplication($stateParams.tenantId, $stateParams.applicationId);
+      }, 3000);
+    }
+  }
+
+  $scope.getApplication = function(tenantId, applicationId) {
+    $scope.application = $rootScope.applications[tenantId][applicationId];
+      
+    $scope.CREDIT_SCORE.$loaded().then(function() {
+      $scope.getCreditReport($scope.application.creditScore);
+    });
+  }
+
+  $scope.CREDIT_SCORE = $firebase(firebaseReference.child("creditScore")).$asObject();
 
   $scope.getCreditReport = function(score) {
   	angular.forEach($scope.CREDIT_SCORE, function(report, key) {
@@ -42,7 +60,12 @@ App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams',
   	});
   }
 
-  $scope.CREDIT_SCORE.$loaded().then(function() {
-    $scope.getCreditReport($scope.application.creditScore);
-  });
+  if (!$rootScope.applications) {
+    $rootScope.authUser.$loaded()
+      .then(function() {
+        $scope.getAllApplications();
+      });
+  } else {
+    $scope.getApplication($stateParams.tenantId, $stateParams.applicationId);
+  }
 }]);
