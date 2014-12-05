@@ -64,8 +64,6 @@ var vendorBaseScripts = [
   '../vendor/angulartranslate/angular-translate-loader-static-files.js',
   '../vendor/angulartranslate/angular-translate-storage-local.js',
   '../vendor/angulartranslate/angular-translate-storage-cookie.js',
-  // oclazyload
-  '../vendor/oclazyload/ocLazyLoad.min.js',
   // UI Bootstrap
   '../vendor/bootstrap/js/ui-bootstrap-tpls-0.11.0.min.js',
   // Loading Bar
@@ -73,6 +71,7 @@ var vendorBaseScripts = [
   // Firebase
   '../vendor/firebase/firebase.min.js',
   '../vendor/firebase/angularfire.js',
+  // More plugins
   '../vendor/fastclick/fastclick.js',
   '../vendor/modernizr/modernizr.js',
   '../vendor/skycons/skycons.js',
@@ -80,6 +79,7 @@ var vendorBaseScripts = [
   '../vendor/animo/animo.min.js',
   '../vendor/sparklines/jquery.sparkline.min.js',
   '../vendor/slimscroll/jquery.slimscroll.min.js',
+  '../vendor/parsley/parsley.min.js'
 ];
 
 // SOURCES CONFIG 
@@ -186,21 +186,6 @@ gulp.task('styles:app', function() {
         .pipe(gulp.dest(build.styles));
 });
 
-// APP RTL
-gulp.task('styles:app:rtl', function() {
-    return gulp.src(source.styles.app.main)
-        .pipe(less({
-            paths: [source.styles.app.dir]
-        }))
-        .on("error", handleError)
-        .pipe(flipcss())
-        .pipe(rename(function(path) {
-            path.basename += "-rtl";
-            return path;
-        }))
-        .pipe(gulp.dest(build.styles));
-});
-
 // LESS THEMES
 gulp.task('styles:themes', function() {
     return gulp.src(source.styles.themes.main)
@@ -287,7 +272,7 @@ gulp.task('watch', function() {
   livereload.listen();
 
   gulp.watch(source.scripts.watch,           ['scripts:app']);
-  gulp.watch(source.styles.app.watch,        ['styles:app', 'styles:app:rtl']);
+  gulp.watch(source.styles.app.watch,        ['styles:app']);
   gulp.watch(source.styles.themes.watch,     ['styles:themes']);
   gulp.watch(source.bootstrap.watch,         ['styles:app']); //bootstrap
   gulp.watch(source.templates.secure.watch,   ['templates:secure']);
@@ -312,7 +297,6 @@ gulp.task('default', [
           'scripts:vendor',
           'scripts:app',
           'styles:app',
-          'styles:app:rtl',
           'styles:themes',
           'templates:app',
           'templates:secure',

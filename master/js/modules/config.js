@@ -26,32 +26,9 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
   // defaults to applications
   $urlRouterProvider.otherwise('/secure/login');
 
-  // 
-  // Application Routes
-  // -----------------------------------   
   $stateProvider
-    .state('app', {
-        url: '/app',
-        abstract: true,
-        templateUrl: basepath('app.html'),
-        controller: 'AppController',
-        resolve: authenticate()
-    })
-    .state('app.applications', {
-        url: '/applications',
-        title: 'Applications',
-        templateUrl: basepath('applications.html'),
-        controller: 'ApplicationsController'
-    })
-    .state('app.view-application', {
-        url: '/applications/:id',
-        title: 'Application',
-        templateUrl: basepath('application.html'),
-        controller: 'ApplicationController'
-    })
-
     // 
-    // Single Page Routes
+    // Secure/Auth Page Routes
     // ----------------------------------- 
     .state('secure', {
         url: '/secure',
@@ -72,8 +49,29 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         title: "Register",
         templateUrl: 'app/secure/register.html'
     })
-
-
+    
+    // 
+    // Application Routes
+    // -----------------------------------   
+    .state('app', {
+        url: '/app',
+        abstract: true,
+        templateUrl: basepath('app.html'),
+        controller: 'AppController',
+        resolve: authenticate()
+    })
+    .state('app.applications', {
+        url: '/applications',
+        title: 'Applications',
+        templateUrl: basepath('applications.html'),
+        controller: 'ApplicationsController'
+    })
+    .state('app.view-application', {
+        url: '/applications/:id',
+        title: 'Application',
+        templateUrl: basepath('application.html'),
+        controller: 'ApplicationController'
+    })
     ;
 
     // Set here the base of the relative path

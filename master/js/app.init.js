@@ -27,6 +27,14 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
                   }
               });*/
 
+              $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+                // Catch the error thrown when the $requireAuth promise is rejected
+                // and redirect the user back to the login page
+                if (error === "AUTH_REQUIRED") {
+                  $rootScope.$state.go("secure.login");
+                }
+              });
+
               // Scope Globals
               // ----------------------------------- 
               $rootScope.app = {

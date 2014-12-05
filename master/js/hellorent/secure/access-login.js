@@ -14,15 +14,13 @@ helloRentApp.controller('LoginFormController', ['$rootScope', '$scope', '$log', 
   $scope.login = function() {
     $scope.authMsg = ''; // clear up a possible existing message
 
-    accessService.login({
-      email: $scope.account.email,
-      password: $scope.account.password
-    }).then(function(authData) {
-      $log.debug("Logged in as:", authData.uid);
-      $state.go('app.applications');
-    }).catch(function(error) {
-      $log.error("Authentication failed:", error);
-      $scope.authMsg = "Authentication failed";
-    });
+    accessService.login("password", $scope.account)
+      .then(function(authData) {
+        $log.debug("Logged in as:", authData.uid);
+        $state.go('app.applications');
+      }).catch(function(error) {
+        $log.error("Authentication failed:", error);
+        $scope.authMsg = "Authentication failed";
+      });
   }
 }]);

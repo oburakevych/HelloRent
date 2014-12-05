@@ -27,6 +27,14 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
                   }
               });*/
 
+              $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+                // Catch the error thrown when the $requireAuth promise is rejected
+                // and redirect the user back to the login page
+                if (error === "AUTH_REQUIRED") {
+                  $rootScope.$state.go("secure.login");
+                }
+              });
+
               // Scope Globals
               // ----------------------------------- 
               $rootScope.app = {
@@ -72,32 +80,9 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
   // defaults to applications
   $urlRouterProvider.otherwise('/secure/login');
 
-  // 
-  // Application Routes
-  // -----------------------------------   
   $stateProvider
-    .state('app', {
-        url: '/app',
-        abstract: true,
-        templateUrl: basepath('app.html'),
-        controller: 'AppController',
-        resolve: authenticate()
-    })
-    .state('app.applications', {
-        url: '/applications',
-        title: 'Applications',
-        templateUrl: basepath('applications.html'),
-        controller: 'ApplicationsController'
-    })
-    .state('app.view-application', {
-        url: '/applications/:id',
-        title: 'Application',
-        templateUrl: basepath('application.html'),
-        controller: 'ApplicationController'
-    })
-
     // 
-    // Single Page Routes
+    // Secure/Auth Page Routes
     // ----------------------------------- 
     .state('secure', {
         url: '/secure',
@@ -118,8 +103,29 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         title: "Register",
         templateUrl: 'app/secure/register.html'
     })
-
-
+    
+    // 
+    // Application Routes
+    // -----------------------------------   
+    .state('app', {
+        url: '/app',
+        abstract: true,
+        templateUrl: basepath('app.html'),
+        controller: 'AppController',
+        resolve: authenticate()
+    })
+    .state('app.applications', {
+        url: '/applications',
+        title: 'Applications',
+        templateUrl: basepath('applications.html'),
+        controller: 'ApplicationsController'
+    })
+    .state('app.view-application', {
+        url: '/applications/:id',
+        title: 'Application',
+        templateUrl: basepath('application.html'),
+        controller: 'ApplicationController'
+    })
     ;
 
     // Set here the base of the relative path
@@ -4393,7 +4399,7 @@ helloRentApp
  =========================================================*/
 App.controller('ApplicationsController', ['$scope', '$rootScope', '$firebase', "$timeout", 'applicationService', function($scope, $rootScope, $firebase, $timeout, applicationService){
   console.log($rootScope.authUser);
-  $rootScope.applications = applicationService.$asObject();
+  //$rootScope.applications = applicationService.$asObject();
 }]);
 
 App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams', '$firebase', function($scope, $rootScope, $stateParams, $firebase) {
@@ -4442,16 +4448,14 @@ helloRentApp.controller('LoginFormController', ['$rootScope', '$scope', '$log', 
   $scope.login = function() {
     $scope.authMsg = ''; // clear up a possible existing message
 
-    accessService.login({
-      email: $scope.account.email,
-      password: $scope.account.password
-    }).then(function(authData) {
-      $log.debug("Logged in as:", authData.uid);
-      $state.go('app.applications');
-    }).catch(function(error) {
-      $log.error("Authentication failed:", error);
-      $scope.authMsg = "Authentication failed";
-    });
+    accessService.login("password", $scope.account)
+      .then(function(authData) {
+        $log.debug("Logged in as:", authData.uid);
+        $state.go('app.applications');
+      }).catch(function(error) {
+        $log.error("Authentication failed:", error);
+        $scope.authMsg = "Authentication failed";
+      });
   }
 }]);
 
@@ -4469,7 +4473,7 @@ helloRentApp.controller('LogoutController', ['$rootScope', '$scope', '$log', '$s
   }
 
   $scope.logout();
-  $state.go("secure.login"); // regirect to login page
+  //$state.go("secure.login"); // regirect to login page
 }]);
 
 /**=========================================================
@@ -4490,20 +4494,49 @@ helloRentApp.controller('RegisterFormController', ['$rootScope', '$scope', '$log
     $scope.authMsg = ''; // clear up a possible existing message
     accessService.register($scope.account).then(function() {
       $log.debug("User created successfully!");
-      return accessService.login($scope.account);
+      return accessService.login("password", $scope.account);
     }).then(function(authData) {
         $log.debug("New user logged in as:", authData.uid);
-
-        var newUser = new HelloRentUser(authData.uid, $scope.account.email, $scope.account.firstName);
-        var usersRef = $firebase(firebaseReference.child("users"));
-        usersRef.$set(authData.uid, newUser).then(function(userRef) {
-          $rootScope.authUser = $firebase(userRef);
-          $state.go('app.applications');
-        });
+        
+        $scope.createUser(authData, $scope.account.email, $scope.account.firstName);
       }).catch(function(error) {
-        $log.error("Registration failed:", error);
-        $scope.authMsg = "Registration failed";
+        $log.warn("Registration failed: ", error);
+        $scope.authMsg = "Registration failed: " + error.message;
       });
+  }
+
+  $scope.registerWith = function(provider) {
+    $scope.authMsg = ''; // clear up a possible existing message
+    
+    accessService.login(provider).then(function(authData) {
+      $scope.createUser(authData);
+    }).catch(function(error) {
+        $log.warn("Registration failed:", error);
+        $scope.authMsg = "Registration failed: " + error.message;
+    });
+  }
+
+  $scope.createUser = function(authData, email, name) {
+    var uid = authData.uid;
+
+    var userRef = firebaseReference.child("users").child(uid);
+
+    $log.debug(userRef);
+
+    if (!email && authData[authData.provider] && authData[authData.provider].email) {
+      email = authData[authData.provider].email;
+    }
+
+    if (!name && authData[authData.provider].displayName) {
+      name = authData[authData.provider].displayName;
+    }
+
+    var usersRef = $firebase(firebaseReference.child("users"));
+    var newUser = new HelloRentUser(uid, email, name);
+    
+    usersRef.$set(uid, newUser).then(function() {
+      $rootScope.$state.go('app.applications');
+    });
   }
 }]);
 
@@ -4511,14 +4544,11 @@ helloRentApp.controller('RegisterFormController', ['$rootScope', '$scope', '$log
 helloRentApp.factory('accessService', ['$rootScope', '$state', '$log', 'firebaseReference', '$firebaseAuth', '$firebase',
   function($rootScope, $state, $log, firebaseReference, $firebaseAuth, $firebase) {
     console.log("accessService");
-    return {
-      // Authenticates current session (via cookie), 
-      // Sets $rootScope.authUser, all synchronously, returns void
-      authenticate: function() { 
-        $log.debug("authenticate");
-        if (!$rootScope.auth) {
-          $rootScope.auth = $firebaseAuth(firebaseReference);
-        }
+
+    function getAuth() {
+      if (!$rootScope.auth) {
+        $log.debug("initializing auth");
+        $rootScope.auth = $firebaseAuth(firebaseReference);
 
         $rootScope.auth.$onAuth(function(authData) {
           if (authData) {
@@ -4529,78 +4559,63 @@ helloRentApp.factory('accessService', ['$rootScope', '$state', '$log', 'firebase
                                               ).$asObject();
           } else {
             $log.debug("Unauthenticated");
-            $rootScope.authUser = {}; // clear up on logout
+            $rootScope.authUser = null; // clear up on logout
+
+            if (!$rootScope.$state.is("secure.login") && !$rootScope.$state.is("secure.register")) {
+              $rootScope.$state.go("secure.login");
+            }
           }
         });
+      }
 
-        var authUserObj = $rootScope.auth.$getAuth(); // actual authentication
-        // redirect to the login page if unsuccessfull
-        if (!authUserObj) {
-          $state.go('secure/login');
+      return $rootScope.auth;
+    }
+
+    return {
+      // Authenticates current session (via cookie), 
+      // Sets $rootScope.authUser, all synchronously, returns void
+      authenticate: function() { 
+        $log.debug("authenticate");
+
+        var auth = getAuth().$getAuth(); // actual authentication
+
+        if (!auth) {
+          $rootScope.$state.go("secure/login");
         }
+
+        return auth;
       },
       // Loggs in an existing user and returns a promice
-      login: function(credentials) {  
-        $log.debug("login");
-
-        if (!$rootScope.auth) {
-          $rootScope.auth = $firebaseAuth(firebaseReference);
+      login: function(provider, credentials) {  
+        $log.debug("login with " + provider);
+        
+        var promise;
+        switch(provider) {
+          case "password": 
+            if (credentials.email && credentials.password) {
+              promise = getAuth().$authWithPassword(credentials);
+            }
+            break;
+          case "facebook": 
+            promise = getAuth().$authWithOAuthRedirect("facebook");
+            break;
+          default:
+            promise = getAuth().$authWithOAuthRedirect(provider);
         }
-
-        if (credentials.email && credentials.password) {
-          return $rootScope.auth.$authWithPassword(credentials);
-        }
+        
+        return promise;
       },
       // Unauthenticates current Firebase client, returns void
       logout: function() {
         $log.debug("logout");
-          if (!$rootScope.auth) {
-            $rootScope.auth = $firebaseAuth(firebaseReference);
-          }
 
-          $rootScope.auth.$unauth();
+        getAuth().$unauth();
       },
       // Registers a new user and returns a promice
       register: function(account) { 
         $log.debug("register");
-        if (!$rootScope.auth) {
-          $rootScope.auth = $firebaseAuth(firebaseReference);
-        }
 
-        return $rootScope.auth.$createUser(account.email, account.password);
-      }
-    }
-  }
-]);
-//Authentication
-
-helloRentApp.factory('authenticationService', ['$rootScope', '$state', 'firebaseReference', '$firebaseAuth', '$firebase',
-  function($rootScope, $state, firebaseReference, $firebaseAuth, $firebase) {
-    console.log("AuthenticationService");
-    return {
-      authenticate: function() {
-        console.log("authenticate");
-        if (!$rootScope.auth) {
-          $rootScope.auth = $firebaseAuth(firebaseReference);
-        }
-
-        $rootScope.auth.$onAuth(function(authData) {
-          if (authData) {
-            console.log("Logged in as:", authData.uid);
-            $rootScope.authUser = $firebase(firebaseReference
-                                              .child("users")
-                                              .child(authData.uid)
-                                              ).$asObject();
-          } else {
-            $rootScope.authUser = {}; // clear up on logout
-          }
-        });
-
-        var authUserObj = $rootScope.auth.$getAuth(); // actual authentication
-        // redirect to the login page if unsuccessfull
-        if (!authUserObj) {
-          $state.go('secure/login');
-        }
+        return getAuth().$createUser(account.email, account.password);
       }
     }
   }

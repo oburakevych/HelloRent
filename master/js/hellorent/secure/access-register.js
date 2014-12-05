@@ -16,19 +16,48 @@ helloRentApp.controller('RegisterFormController', ['$rootScope', '$scope', '$log
     $scope.authMsg = ''; // clear up a possible existing message
     accessService.register($scope.account).then(function() {
       $log.debug("User created successfully!");
-      return accessService.login($scope.account);
+      return accessService.login("password", $scope.account);
     }).then(function(authData) {
         $log.debug("New user logged in as:", authData.uid);
-
-        var newUser = new HelloRentUser(authData.uid, $scope.account.email, $scope.account.firstName);
-        var usersRef = $firebase(firebaseReference.child("users"));
-        usersRef.$set(authData.uid, newUser).then(function(userRef) {
-          $rootScope.authUser = $firebase(userRef);
-          $state.go('app.applications');
-        });
+        
+        $scope.createUser(authData, $scope.account.email, $scope.account.firstName);
       }).catch(function(error) {
-        $log.error("Registration failed:", error);
-        $scope.authMsg = "Registration failed";
+        $log.warn("Registration failed: ", error);
+        $scope.authMsg = "Registration failed: " + error.message;
       });
+  }
+
+  $scope.registerWith = function(provider) {
+    $scope.authMsg = ''; // clear up a possible existing message
+    
+    accessService.login(provider).then(function(authData) {
+      $scope.createUser(authData);
+    }).catch(function(error) {
+        $log.warn("Registration failed:", error);
+        $scope.authMsg = "Registration failed: " + error.message;
+    });
+  }
+
+  $scope.createUser = function(authData, email, name) {
+    var uid = authData.uid;
+
+    var userRef = firebaseReference.child("users").child(uid);
+
+    $log.debug(userRef);
+
+    if (!email && authData[authData.provider] && authData[authData.provider].email) {
+      email = authData[authData.provider].email;
+    }
+
+    if (!name && authData[authData.provider].displayName) {
+      name = authData[authData.provider].displayName;
+    }
+
+    var usersRef = $firebase(firebaseReference.child("users"));
+    var newUser = new HelloRentUser(uid, email, name);
+    
+    usersRef.$set(uid, newUser).then(function() {
+      $rootScope.$state.go('app.applications');
+    });
   }
 }]);

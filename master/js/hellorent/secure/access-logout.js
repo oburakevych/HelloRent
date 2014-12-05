@@ -12,5 +12,5 @@ helloRentApp.controller('LogoutController', ['$rootScope', '$scope', '$log', '$s
   }
 
   $scope.logout();
-  $state.go("secure.login"); // regirect to login page
+  //$state.go("secure.login"); // regirect to login page
 }]);

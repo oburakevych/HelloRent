@@ -4,7 +4,7 @@
  =========================================================*/
 App.controller('ApplicationsController', ['$scope', '$rootScope', '$firebase', "$timeout", 'applicationService', function($scope, $rootScope, $firebase, $timeout, applicationService){
   console.log($rootScope.authUser);
-  $rootScope.applications = applicationService.$asObject();
+  //$rootScope.applications = applicationService.$asObject();
 }]);
 
 App.controller('ApplicationController', ['$scope', '$rootScope', '$stateParams', '$firebase', function($scope, $rootScope, $stateParams, $firebase) {

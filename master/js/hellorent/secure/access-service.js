@@ -2,14 +2,11 @@
 helloRentApp.factory('accessService', ['$rootScope', '$state', '$log', 'firebaseReference', '$firebaseAuth', '$firebase',
   function($rootScope, $state, $log, firebaseReference, $firebaseAuth, $firebase) {
     console.log("accessService");
-    return {
-      // Authenticates current session (via cookie), 
-      // Sets $rootScope.authUser, all synchronously, returns void
-      authenticate: function() { 
-        $log.debug("authenticate");
-        if (!$rootScope.auth) {
-          $rootScope.auth = $firebaseAuth(firebaseReference);
-        }
+
+    function getAuth() {
+      if (!$rootScope.auth) {
+        $log.debug("initializing auth");
+        $rootScope.auth = $firebaseAuth(firebaseReference);
 
         $rootScope.auth.$onAuth(function(authData) {
           if (authData) {
@@ -20,45 +17,63 @@ helloRentApp.factory('accessService', ['$rootScope', '$state', '$log', 'firebase
                                               ).$asObject();
           } else {
             $log.debug("Unauthenticated");
-            $rootScope.authUser = {}; // clear up on logout
+            $rootScope.authUser = null; // clear up on logout
+
+            if (!$rootScope.$state.is("secure.login") && !$rootScope.$state.is("secure.register")) {
+              $rootScope.$state.go("secure.login");
+            }
           }
         });
+      }
 
-        var authUserObj = $rootScope.auth.$getAuth(); // actual authentication
-        // redirect to the login page if unsuccessfull
-        if (!authUserObj) {
-          $state.go('secure/login');
+      return $rootScope.auth;
+    }
+
+    return {
+      // Authenticates current session (via cookie), 
+      // Sets $rootScope.authUser, all synchronously, returns void
+      authenticate: function() { 
+        $log.debug("authenticate");
+
+        var auth = getAuth().$getAuth(); // actual authentication
+
+        if (!auth) {
+          $rootScope.$state.go("secure/login");
         }
+
+        return auth;
       },
       // Loggs in an existing user and returns a promice
-      login: function(credentials) {  
-        $log.debug("login");
-
-        if (!$rootScope.auth) {
-          $rootScope.auth = $firebaseAuth(firebaseReference);
+      login: function(provider, credentials) {  
+        $log.debug("login with " + provider);
+        
+        var promise;
+        switch(provider) {
+          case "password": 
+            if (credentials.email && credentials.password) {
+              promise = getAuth().$authWithPassword(credentials);
+            }
+            break;
+          case "facebook": 
+            promise = getAuth().$authWithOAuthRedirect("facebook");
+            break;
+          default:
+            promise = getAuth().$authWithOAuthRedirect(provider);
         }
-
-        if (credentials.email && credentials.password) {
-          return $rootScope.auth.$authWithPassword(credentials);
-        }
+        
+        return promise;
       },
       // Unauthenticates current Firebase client, returns void
       logout: function() {
         $log.debug("logout");
-          if (!$rootScope.auth) {
-            $rootScope.auth = $firebaseAuth(firebaseReference);
-          }
 
-          $rootScope.auth.$unauth();
+        getAuth().$unauth();
       },
       // Registers a new user and returns a promice
       register: function(account) { 
         $log.debug("register");
-        if (!$rootScope.auth) {
-          $rootScope.auth = $firebaseAuth(firebaseReference);
-        }
 
-        return $rootScope.auth.$createUser(account.email, account.password);
+        return getAuth().$createUser(account.email, account.password);
       }
     }
   }
