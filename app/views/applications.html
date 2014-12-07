@@ -1,7 +1,7 @@
 <h3>Applications
    <small>Screen your applicants</small>
 </h3>
-<div class="row">
+<div ng-class="{'csspinner line grow': !applications}" class="row">
    <div ng-repeat="(tenantId, tenants) in applications">
       <div ng-repeat="(applicationId, application) in tenants" class="col-lg-4">
          <!-- START widget-->

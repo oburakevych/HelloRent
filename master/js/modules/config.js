@@ -67,7 +67,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         controller: 'ApplicationsController'
     })
     .state('app.view-application', {
-        url: '/tenant/:tenantId/applications/:applicationId',
+        url: '/tenants/:tenantId/applications/:applicationId',
         title: 'Application',
         templateUrl: basepath('application.html'),
         controller: 'ApplicationController'

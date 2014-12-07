@@ -29,7 +29,7 @@
   #panelDemo7.panel(ng-class="report.cssClass")
     .panel-heading
       h4 Credit Score: {{report.title}}
-    .panel-body
+    div(ng-class="{'csspinner traditional': !report}").panel-body
       p
         | {{report.description}}
     //.panel-footer
@@ -41,7 +41,7 @@ div(ng-show="application.employmentDetails.isEmployed").col-lg-4
   #panelDemo8.panel.panel-success
     .panel-heading
       h4 Currently Employed
-    .panel-body
+    div(ng-class="{'csspinner traditional': !report}").panel-body
         .row.row-table
           .col-xs-12
             ul.list-unstyled
@@ -70,12 +70,12 @@ div(ng-show="!application.employmentDetails.isEmployed").col-lg-4
   #panelDemo8.panel.panel-warning
     .panel-heading
       h4 Currently Unemployed
-    .panel-body
+    div(ng-class="{'csspinner traditional': !report}").panel-body
         .row.row-table
           .col-xs-12
             ul.list-unstyled
               li.mb-sm
-                p Details: {{application.employmentDetails.message}}
+                p(ng-show="application.employmentDetails.message") Details: {{application.employmentDetails.message}}
 
     // END widget
 
@@ -89,18 +89,18 @@ div(ng-show="!application.employmentDetails.isEmployed").col-lg-4
   #panelDemo9.panel.panel-primary
     .panel-heading
       h4 Rental History
-    .panel-body
+    div(ng-class="{'csspinner traditional': !report}").panel-body
         .table-responsive
           table.table
             tbody
-              tr
+              tr(ng-repeat="address in application.addresses")
                 td
-                  p 9 Power st., St.Albans, 3021 VIC (9 months)
-                
-              tr
-                td
-                  p 50 Grampians way, Caroline Springs, 3023 VIC (2 years)
-
+                  p.text-center {{address.moveIn}} - {{address.movedOut}}
+                  p {{address.line1}}, {{address.suburb}}, {{address.postCode}} {{address.state}}
+                  p References: 
+                  div(ng-repeat="reference in address.references") {{reference.name}} 
+                      span(ng-show="reference.relationship") ({{reference.relationship}})
+                      | {{reference.phoneNumber}}
     //.panel-footer
       //| Read more
   // END panel

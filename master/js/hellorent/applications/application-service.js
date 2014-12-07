@@ -5,13 +5,25 @@
  
 helloRentApp.service('applicationService', ['$firebase', 'firebaseReference', '$log', function($firebase, firebaseReference, $log) {
   return {
-  	get: function(propertyId) {
+  	getAll: function(propertyId) {
   		$log.debug(propertyId);
   		return $firebase(firebaseReference
   							.child("properties")
   							.child(propertyId)
   							.child("applications"))
-  							.$asObject();
+  						.$asObject();
+  	},
+  	get: function(propertyId, tenantId, applicationId) {
+  		$log.debug(propertyId);
+  		$log.debug(applicationId);
+  		return $firebase(firebaseReference
+  							.child("properties")
+  							.child(propertyId)
+  							.child("applications")
+  							.child(tenantId)
+  							.child(applicationId))
+  						.$asObject();
   	}
+
   }
 }]);

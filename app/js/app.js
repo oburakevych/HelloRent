@@ -121,7 +121,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         controller: 'ApplicationsController'
     })
     .state('app.view-application', {
-        url: '/tenant/:tenantId/applications/:applicationId',
+        url: '/tenants/:tenantId/applications/:applicationId',
         title: 'Application',
         templateUrl: basepath('application.html'),
         controller: 'ApplicationController'
@@ -4385,7 +4385,7 @@ App.service('vectorMap', function() {
 });
 // HelloRent app extends Angle
 
-var helloRentApp = angular.module('helloRent', ['angle', 'firebase']);
+var helloRentApp = angular.module('helloRent', ['angle', 'ngResource', 'firebase']);
 /**=========================================================
  * Module: constants.js
  * Define constants to inject across the application
@@ -4400,14 +4400,26 @@ helloRentApp
  
 helloRentApp.service('applicationService', ['$firebase', 'firebaseReference', '$log', function($firebase, firebaseReference, $log) {
   return {
-  	get: function(propertyId) {
+  	getAll: function(propertyId) {
   		$log.debug(propertyId);
   		return $firebase(firebaseReference
   							.child("properties")
   							.child(propertyId)
   							.child("applications"))
-  							.$asObject();
+  						.$asObject();
+  	},
+  	get: function(propertyId, tenantId, applicationId) {
+  		$log.debug(propertyId);
+  		$log.debug(applicationId);
+  		return $firebase(firebaseReference
+  							.child("properties")
+  							.child(propertyId)
+  							.child("applications")
+  							.child(tenantId)
+  							.child(applicationId))
+  						.$asObject();
   	}
+
   }
 }]);
 /**=========================================================
@@ -4429,40 +4441,28 @@ helloRentApp.controller('ApplicationsController', ['$scope', '$rootScope', '$log
     var propertyIds = $rootScope.authUser.properties;
     if (propertyIds) {
       angular.forEach(propertyIds, function(propertyId) {
-        $rootScope.applications = applicationService.get(propertyId);
+        $rootScope.applications = applicationService.getAll(propertyId);
       });  
     }
   }
 }]);
 
-helloRentApp.controller('ApplicationController', ['$scope', '$rootScope', '$log', 'firebaseReference', '$stateParams', '$firebase', function($scope, $rootScope, $log, firebaseReference, $stateParams, $firebase) {
-  //$log.debug($stateParams);
+helloRentApp.controller('ApplicationController', ['$scope', '$rootScope', '$log', 'firebaseReference', '$stateParams', '$firebase', '$timeout', 'applicationService', 'CreditReportService', 
+                  function($scope, $rootScope, $log, firebaseReference, $stateParams, $firebase, $timeout, applicationService, CreditReportService) {
+  $scope.getApplication = function(propertyId, tenantId, applicationId) {
+    $log.debug("getApplication(" + tenantId + ", " + applicationId + ")");
+    $scope.application = applicationService.get(propertyId, tenantId, applicationId);
 
-  $scope.getAllApplications = function() {
-    //$log.debug($rootScope.authUser);
-    $rootScope.applications = [];
-
-    var propertyIds = $rootScope.authUser.properties;
-    if (propertyIds) {
-      angular.forEach(propertyIds, function(propertyId) {
-        $rootScope.applications = applicationService.get(propertyId);
-      });
-
-      $timeout(function() {
-        $scope.getApplication($stateParams.tenantId, $stateParams.applicationId);
-      }, 3000);
-    }
-  }
-
-  $scope.getApplication = function(tenantId, applicationId) {
-    $scope.application = $rootScope.applications[tenantId][applicationId];
+    $timeout(function() {
+      $log.debug($scope.application);
+    }, 3000);
       
-    $scope.CREDIT_SCORE.$loaded().then(function() {
+    $scope.application.$loaded().then(function() {
       $scope.getCreditReport($scope.application.creditScore);
     });
   }
 
-  $scope.CREDIT_SCORE = $firebase(firebaseReference.child("creditScore")).$asObject();
+  $scope.CREDIT_SCORE = CreditReportService.get();
 
   $scope.getCreditReport = function(score) {
   	angular.forEach($scope.CREDIT_SCORE, function(report, key) {
@@ -4472,14 +4472,14 @@ helloRentApp.controller('ApplicationController', ['$scope', '$rootScope', '$log'
   	});
   }
 
-  if (!$rootScope.applications) {
-    $rootScope.authUser.$loaded()
-      .then(function() {
-        $scope.getAllApplications();
-      });
-  } else {
-    $scope.getApplication($stateParams.tenantId, $stateParams.applicationId);
-  }
+  $rootScope.authUser.$loaded()
+    .then(function() {
+      $scope.getApplication($rootScope.authUser.properties[0], $stateParams.tenantId, $stateParams.applicationId);
+    });
+
+}]);
+helloRentApp.factory('CreditReportService', ['$resource', function($resource) {
+	return $resource('app/data/credit-report.json');
 }]);
 /**=========================================================
  * Module: firebaseReference.js

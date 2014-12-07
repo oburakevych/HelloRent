@@ -1,7 +1,7 @@
 h3 Applications
   small Screen your applicants
 
-.row
+div(ng-class="{'csspinner line grow': !applications}").row
   div(ng-repeat='(tenantId, tenants) in applications')
     .col-lg-4(ng-repeat='(applicationId, application) in tenants')
       // START widget

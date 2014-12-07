@@ -34,7 +34,7 @@
       <div class="panel-heading">
          <h4>Credit Score: {{report.title}}</h4>
       </div>
-      <div class="panel-body">
+      <div ng-class="{'csspinner traditional': !report}" class="panel-body">
          <p>{{report.description}}</p>
       </div>
       <!--.panel-footer//| Read More-->
@@ -47,7 +47,7 @@
       <div class="panel-heading">
          <h4>Currently Employed</h4>
       </div>
-      <div class="panel-body">
+      <div ng-class="{'csspinner traditional': !report}" class="panel-body">
          <div class="row row-table">
             <div class="col-xs-12">
                <ul class="list-unstyled">
@@ -74,12 +74,12 @@
       <div class="panel-heading">
          <h4>Currently Unemployed</h4>
       </div>
-      <div class="panel-body">
+      <div ng-class="{'csspinner traditional': !report}" class="panel-body">
          <div class="row row-table">
             <div class="col-xs-12">
                <ul class="list-unstyled">
                   <li class="mb-sm">
-                     <p>Details: {{application.employmentDetails.message}}</p>
+                     <p ng-show="application.employmentDetails.message">Details: {{application.employmentDetails.message}}</p>
                   </li>
                </ul>
             </div>
@@ -96,18 +96,17 @@
       <div class="panel-heading">
          <h4>Rental History</h4>
       </div>
-      <div class="panel-body">
+      <div ng-class="{'csspinner traditional': !report}" class="panel-body">
          <div class="table-responsive">
             <table class="table">
                <tbody>
-                  <tr>
+                  <tr ng-repeat="address in application.addresses">
                      <td>
-                        <p>9 Power st., St.Albans, 3021 VIC (9 months)</p>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td>
-                        <p>50 Grampians way, Caroline Springs, 3023 VIC (2 years)</p>
+                        <p class="text-center">{{address.moveIn}} - {{address.movedOut}}</p>
+                        <p>{{address.line1}}, {{address.suburb}}, {{address.postCode}} {{address.state}}</p>
+                        <p>References:</p>
+                        <div ng-repeat="reference in address.references">{{reference.name}}
+                           <span ng-show="reference.relationship">({{reference.relationship}})</span>{{reference.phoneNumber}}</div>
                      </td>
                   </tr>
                </tbody>
