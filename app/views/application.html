@@ -106,7 +106,7 @@
                         <p>{{address.line1}}, {{address.suburb}}, {{address.postCode}} {{address.state}}</p>
                         <p>References:</p>
                         <div ng-repeat="reference in address.references">{{reference.name}}
-                           <span ng-show="reference.relationship">({{reference.relationship}})</span>{{reference.phoneNumber}}</div>
+                           <span ng-show="reference.relationship">({{reference.relationship}})</span>&nbsp;{{reference.phoneNumber}}</div>
                      </td>
                   </tr>
                </tbody>

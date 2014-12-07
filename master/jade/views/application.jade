@@ -100,7 +100,7 @@ div(ng-show="!application.employmentDetails.isEmployed").col-lg-4
                   p References: 
                   div(ng-repeat="reference in address.references") {{reference.name}} 
                       span(ng-show="reference.relationship") ({{reference.relationship}})
-                      | {{reference.phoneNumber}}
+                      | &nbsp;{{reference.phoneNumber}}
     //.panel-footer
       //| Read more
   // END panel
