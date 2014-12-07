@@ -4455,9 +4455,11 @@ helloRentApp.controller('ApplicationController', ['$scope', '$rootScope', '$log'
 
     $timeout(function() {
       $log.debug($scope.application);
+      $log.debug($scope.report);
     }, 3000);
       
     $scope.application.$loaded().then(function() {
+      $log.debug("LOADING REPORT");
       $scope.getCreditReport($scope.application.creditScore);
     });
   }
@@ -4465,29 +4467,24 @@ helloRentApp.controller('ApplicationController', ['$scope', '$rootScope', '$log'
   $scope.CREDIT_SCORE = CreditReportService.get();
 
   $scope.getCreditReport = function(score) {
-  	angular.forEach($scope.CREDIT_SCORE, function(report, key) {
-      if (report.min <= score && report.max >= score) {
-  			$scope.report = report;
-  		}
-  	});
+    $scope.CREDIT_SCORE.$promise.then(function() {
+      angular.forEach($scope.CREDIT_SCORE, function(report, key) {
+        if (report.min <= score && report.max >= score) {
+          $log.debug("Repport assigned");
+          $log.debug($scope.report);
+          $scope.report = report;
+        }
+      });      
+    });
   }
 
   $rootScope.authUser.$loaded()
     .then(function() {
       $scope.getApplication($rootScope.authUser.properties[0], $stateParams.tenantId, $stateParams.applicationId);
     });
-
 }]);
 helloRentApp.factory('CreditReportService', ['$resource', function($resource) {
 	return $resource('app/data/credit-report.json');
-}]);
-/**=========================================================
- * Module: firebaseReference.js
- * Factory that establishes connection to Firebase and returns firebase reference for the services
- =========================================================*/
- 
-helloRentApp.factory('firebaseReference', ['FIREBASE_URL', function(FIREBASE_URL) {
-	return new Firebase(FIREBASE_URL);
 }]);
 /**=========================================================
  * Module: access-login.js
@@ -4713,3 +4710,12 @@ function HelloRentUser(id, email, firstName) {
 	this.properties = [];
 }
 
+
+/**=========================================================
+ * Module: firebaseReference.js
+ * Factory that establishes connection to Firebase and returns firebase reference for the services
+ =========================================================*/
+ 
+helloRentApp.factory('firebaseReference', ['FIREBASE_URL', function(FIREBASE_URL) {
+	return new Firebase(FIREBASE_URL);
+}]);

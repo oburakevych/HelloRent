@@ -31,9 +31,11 @@ helloRentApp.controller('ApplicationController', ['$scope', '$rootScope', '$log'
 
     $timeout(function() {
       $log.debug($scope.application);
+      $log.debug($scope.report);
     }, 3000);
       
     $scope.application.$loaded().then(function() {
+      $log.debug("LOADING REPORT");
       $scope.getCreditReport($scope.application.creditScore);
     });
   }
@@ -41,16 +43,19 @@ helloRentApp.controller('ApplicationController', ['$scope', '$rootScope', '$log'
   $scope.CREDIT_SCORE = CreditReportService.get();
 
   $scope.getCreditReport = function(score) {
-  	angular.forEach($scope.CREDIT_SCORE, function(report, key) {
-      if (report.min <= score && report.max >= score) {
-  			$scope.report = report;
-  		}
-  	});
+    $scope.CREDIT_SCORE.$promise.then(function() {
+      angular.forEach($scope.CREDIT_SCORE, function(report, key) {
+        if (report.min <= score && report.max >= score) {
+          $log.debug("Repport assigned");
+          $log.debug($scope.report);
+          $scope.report = report;
+        }
+      });      
+    });
   }
 
   $rootScope.authUser.$loaded()
     .then(function() {
       $scope.getApplication($rootScope.authUser.properties[0], $stateParams.tenantId, $stateParams.applicationId);
     });
-
 }]);

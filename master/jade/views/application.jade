@@ -41,7 +41,7 @@ div(ng-show="application.employmentDetails.isEmployed").col-lg-4
   #panelDemo8.panel.panel-success
     .panel-heading
       h4 Currently Employed
-    div(ng-class="{'csspinner traditional': !report}").panel-body
+    div(ng-class="{'csspinner traditional': !application}").panel-body
         .row.row-table
           .col-xs-12
             ul.list-unstyled
@@ -70,7 +70,7 @@ div(ng-show="!application.employmentDetails.isEmployed").col-lg-4
   #panelDemo8.panel.panel-warning
     .panel-heading
       h4 Currently Unemployed
-    div(ng-class="{'csspinner traditional': !report}").panel-body
+    div(ng-class="{'csspinner traditional': !application}").panel-body
         .row.row-table
           .col-xs-12
             ul.list-unstyled
@@ -89,7 +89,7 @@ div(ng-show="!application.employmentDetails.isEmployed").col-lg-4
   #panelDemo9.panel.panel-primary
     .panel-heading
       h4 Rental History
-    div(ng-class="{'csspinner traditional': !report}").panel-body
+    div(ng-class="{'csspinner traditional': !application}").panel-body
         .table-responsive
           table.table
             tbody
