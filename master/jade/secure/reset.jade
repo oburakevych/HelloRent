@@ -1,0 +1,32 @@
+.block-center.mt-xl.wd-xl(ng-controller="ResetFormController")
+  // START panel
+  .panel.panel-dark.panel-flat
+    .panel-heading.text-center
+      a(href="https://hellorent.co")
+        img.block-center.img-rounded(src='app/img/logo-1-w158x50.png', alt='HelloRent Logo')
+    .panel-body
+      div(ng-switch="isPasswordSentSuccessfully")
+        div(ng-switch-when="true")
+          p.text-center.pv INSTRUCTIONS TO RESET YOUR PASSWORD
+          p.text-center have been emailed to {{account.email}}.
+          a(ui-sref="secure.login").btn.btn-block.btn-default Signin
+        div(ng-switch-default)
+          p.text-center.pv PASSWORD RESET
+          form(role='form' ng-submit="reset()")
+            p.text-center Fill with your mail to receive instructions on how to reset your password.
+            .form-group.has-feedback
+              input#resetInputEmail1.form-control(type='email', placeholder='Enter email', autocomplete="off" ng-model="account.email")
+              span(style="display: inline-block; vertical-align: middle; float: none; top: 0px;").fa.fa-envelope.form-control-feedback.text-muted
+            
+            button.btn.btn-danger.btn-block(type='submit') Reset
+
+          .mt.alert.alert-danger.text-center(ng-show='authMsg') {{authMsg}}
+            
+  // END panel
+  .p-lg.text-center
+    span &copy; 
+    span(ng-bind="app.year") 
+    span  - 
+    span(ng-bind="app.name")
+    br
+    span(ng-bind="app.description")

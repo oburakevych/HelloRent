@@ -1,0 +1,39 @@
+<div ng-controller="ResetFormController" class="block-center mt-xl wd-xl">
+   <!-- START panel-->
+   <div class="panel panel-dark panel-flat">
+      <div class="panel-heading text-center">
+         <a href="https://hellorent.co">
+            <img src="app/img/logo-1-w158x50.png" alt="HelloRent Logo" class="block-center img-rounded" />
+         </a>
+      </div>
+      <div class="panel-body">
+         <div ng-switch="isPasswordSentSuccessfully">
+            <div ng-switch-when="true">
+               <p class="text-center pv">INSTRUCTIONS TO RESET YOUR PASSWORD</p>
+               <p class="text-center">have been emailed to {{account.email}}.</p><a ui-sref="secure.login" class="btn btn-block btn-default">Signin</a>
+            </div>
+            <div ng-switch-default="ng-switch-default">
+               <p class="text-center pv">PASSWORD RESET</p>
+               <form role="form" ng-submit="reset()">
+                  <p class="text-center">Fill with your mail to receive instructions on how to reset your password.</p>
+                  <div class="form-group has-feedback">
+                     <input id="resetInputEmail1" type="email" placeholder="Enter email" autocomplete="off" ng-model="account.email" class="form-control" />
+                     <span style="display: inline-block; vertical-align: middle; float: none; top: 0px;" class="fa fa-envelope form-control-feedback text-muted"></span>
+                  </div>
+                  <button type="submit" class="btn btn-danger btn-block">Reset</button>
+               </form>
+               <div ng-show="authMsg" class="mt alert alert-danger text-center">{{authMsg}}</div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- END panel-->
+   <div class="p-lg text-center">
+      <span>&copy;</span>
+      <span ng-bind="app.year"></span>
+      <span>-</span>
+      <span ng-bind="app.name"></span>
+      <br/>
+      <span ng-bind="app.description"></span>
+   </div>
+</div>

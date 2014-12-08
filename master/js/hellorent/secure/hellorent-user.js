@@ -19,7 +19,7 @@ function Profile() {
 		picture: null,
 		about: "",
 		smoke: null
-	}
+	};
 	this.rentalHistory = [];
 	this.workHistory = [];
 }

@@ -2,10 +2,10 @@
   // START panel
   .panel.panel-dark.panel-flat
     .panel-heading.text-center
-      a(href="#")
+      a(href="https://hellorent.co")
         img.block-center.img-rounded(src='app/img/logo-1-w158x50.png', alt='HelloRent logo')
     .panel-body
-      p.text-center.pv SIGNUP TO GET INSTANT ACCESS.
+      p.text-center.pv SIGNUP TO GET INSTANT ACCESS
       form(role='form', validate-form='', novalidate='', ng-submit="register()").mb-lg
         //.form-group.has-feedback
         //  label.text-muted 
@@ -13,15 +13,15 @@
         .form-group.has-feedback
           //label.text-muted(for='signupInputFirstName') First name
           input#signupInputFirstName.form-control(type='text', placeholder='Enter name', autocomplete="off", ng-model="account.firstName", required)
-          span.fa.fa-pencil.form-control-feedback.icons-clear-fix.text-muted
+          span(style="display: inline-block; vertical-align: middle; float: none; top: 0px;").fa.fa-pencil.form-control-feedback.icons-clear-fix.text-muted
         .form-group.has-feedback
           //label.text-muted(for='signupInputEmail1') Email address
           input#signupInputEmail1.form-control(type='email', placeholder='Enter email', autocomplete="off", ng-model="account.email", required)
-          span.fa.fa-envelope.form-control-feedback.icons-clear-fix.text-muted
+          span(style="display: inline-block; vertical-align: middle; float: none; top: 0px;").fa.fa-envelope.form-control-feedback.icons-clear-fix.text-muted
         .form-group.has-feedback
           //label.text-muted(for='signupInputPassword1') Password
           input#signupInputPassword1.form-control(type='password', placeholder='Password', autocomplete="off", ng-model="account.password", required)
-          span.fa.fa-lock.form-control-feedback.text-muted
+          span(style="display: inline-block; vertical-align: middle; float: none; top: 0px;").fa.fa-lock.form-control-feedback.text-muted
         .clearfix
         
         button.btn.btn-block.btn-primary.mt-lg(type='submit') Create account
@@ -31,7 +31,7 @@
               |  By creating an account you agree to HelloRent's 
               a(href="#") Terms of Service
       
-      .alert.alert-danger.text-center(ng-show='authMsg') {{authMsg}}      
+      .alert.alert-danger.text-center(ng-show='authMsg') {{authMsg}}
       
       p.pt-lg.text-center Have an account?
       a(ui-sref="secure.login").btn.btn-block.btn-default Signin

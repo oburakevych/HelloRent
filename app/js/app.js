@@ -103,7 +103,17 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         title: "Register",
         templateUrl: 'app/secure/register.html'
     })
-    
+    .state('secure.reset', {
+        url: '/reset',
+        title: "Reset",
+        templateUrl: 'app/secure/reset.html'
+    })
+    .state('secure.changePassword', {
+        url: '/change-password',
+        title: "Change Password",
+        templateUrl: 'app/secure/change-password.html'
+    })
+
     // 
     // Application Routes
     // -----------------------------------   
@@ -4487,6 +4497,64 @@ helloRentApp.factory('CreditReportService', ['$resource', function($resource) {
 	return $resource('app/data/credit-report.json');
 }]);
 /**=========================================================
+ * Module: access-register.js
+ * Register account api
+ =========================================================*/
+
+helloRentApp.controller('ChangePasswordFormController', ['$rootScope', '$scope', '$log', '$state', 'accessService', 'firebaseReference', '$firebase',
+                           function($rootScope, $scope, $log, $state, accessService, firebaseReference, $firebase) {
+
+  $log.debug("ChangePasswordFormController");
+
+  $scope.init = function() {
+      // bind here all data from the form
+    $scope.account = {};
+    $scope.account.oldPassword = $scope.getCurrentPassword();
+    // place the message if something goes wrong
+    $scope.authMsg = '';    
+  }
+
+  $scope.changePassword = function() {
+    $scope.authMsg = ''; // clear up a possible existing message
+    $scope.account.email = $scope.getEmail(); // load email later to give time authUser to load if required
+
+    accessService.changePassword($scope.account.email, $scope.account.oldPassword, 
+                                  $scope.account.password).then(function() {
+      $log.debug("Password changed successfully!");
+      return accessService.login("password", $scope.account);
+    }).then(function(authData) {
+        $log.debug("User logged in as:", authData.uid);
+        $rootScope.$state.go('app.applications');
+    }).catch(function(error) {
+        $log.warn("Login with new password failed", error);
+        $scope.authMsg = "Password change failed: " + error.message;
+    });
+  }
+
+  $scope.getEmail = function() {
+    if ($rootScope.authUser && $rootScope.authUser.email) {
+      return $rootScope.authUser.email;
+    }
+
+    if ($rootScope.tmpAccount && $rootScope.tmpAccount.email) {
+      return $rootScope.tmpAccount.email;
+    }
+
+    return null;
+  }
+
+  $scope.getCurrentPassword = function() {
+    if ($rootScope.tmpAccount) {
+      return $rootScope.tmpAccount.password;
+    }
+
+    return null;
+  }
+
+  $scope.init();
+}]);
+
+/**=========================================================
  * Module: access-login.js
  * Demo for login api
  =========================================================*/
@@ -4499,13 +4567,23 @@ helloRentApp.controller('LoginFormController', ['$rootScope', '$scope', '$log', 
   // place the message if something goes wrong
   $scope.authMsg = '';
 
+  var LOGIN_PROVIDER = "password";
+
   $scope.login = function() {
     $scope.authMsg = ''; // clear up a possible existing message
 
-    accessService.login("password", $scope.account)
+    accessService.login(LOGIN_PROVIDER, $scope.account)
       .then(function(authData) {
         $log.debug("Logged in as:", authData.uid);
-        $state.go('app.applications');
+        $log.debug(authData);
+
+        if (authData[LOGIN_PROVIDER] && authData[LOGIN_PROVIDER].isTemporaryPassword) {
+          $log.warn("User logged in with temporary password. Requesting password change.");
+          $rootScope.tmpAccount = $scope.account; // temporary store account data for the next step - password change
+          $state.go('secure.changePassword');
+        } else {
+          $state.go('app.applications');
+        }
       }).catch(function(error) {
         $log.error("Authentication failed:", error);
         $scope.authMsg = "Authentication failed";
@@ -4594,6 +4672,33 @@ helloRentApp.controller('RegisterFormController', ['$rootScope', '$scope', '$log
   }
 }]);
 
+/**=========================================================
+ * Module: access-login.js
+ * Demo for login api
+ =========================================================*/
+
+helloRentApp.controller('ResetFormController', ['$rootScope', '$scope', '$log', '$state', 'accessService',
+                 function($rootScope, $scope, $log, $state, accessService) {
+  $log.debug("ResetFormController");
+  // bind here all data from the form
+  $scope.account = {};
+  // place the message if something goes wrong
+  $scope.authMsg = '';
+
+  $scope.reset = function() {
+    $scope.authMsg = ''; // clear up a possible existing message
+
+    accessService.sendResetPasswordEmail($scope.account.email)
+      .then(function() {
+        $log.debug("Reset password email sent");
+        $scope.isPasswordSentSuccessfully = true;
+      }).catch(function(error) {
+        $log.error("Reset password email sending error: ", error);
+        $scope.authMsg = "Reset password failed: " + error.message;
+      });
+  }
+}]);
+
 //Access service
 helloRentApp.factory('accessService', ['$rootScope', '$state', '$log', 'firebaseReference', '$firebaseAuth', '$firebase',
   function($rootScope, $state, $log, firebaseReference, $firebaseAuth, $firebase) {
@@ -4670,6 +4775,15 @@ helloRentApp.factory('accessService', ['$rootScope', '$state', '$log', 'firebase
         $log.debug("register");
 
         return getAuth().$createUser(account.email, account.password);
+      },
+      // Sends reset password email and returns a promise
+      sendResetPasswordEmail: function(email) {
+        $log.debug("Send reset password email" + email);
+        return getAuth().$sendPasswordResetEmail(email);
+      },
+      changePassword: function(email, oldPassword, newPassword) {
+        $log.warn("Changing password for user " + email);
+        return getAuth().$changePassword(email, oldPassword, newPassword);
       }
     }
   }
@@ -4695,7 +4809,7 @@ function Profile() {
 		picture: null,
 		about: "",
 		smoke: null
-	}
+	};
 	this.rentalHistory = [];
 	this.workHistory = [];
 }

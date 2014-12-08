@@ -49,7 +49,17 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         title: "Register",
         templateUrl: 'app/secure/register.html'
     })
-    
+    .state('secure.reset', {
+        url: '/reset',
+        title: "Reset",
+        templateUrl: 'app/secure/reset.html'
+    })
+    .state('secure.changePassword', {
+        url: '/change-password',
+        title: "Change Password",
+        templateUrl: 'app/secure/change-password.html'
+    })
+
     // 
     // Application Routes
     // -----------------------------------   

@@ -74,6 +74,15 @@ helloRentApp.factory('accessService', ['$rootScope', '$state', '$log', 'firebase
         $log.debug("register");
 
         return getAuth().$createUser(account.email, account.password);
+      },
+      // Sends reset password email and returns a promise
+      sendResetPasswordEmail: function(email) {
+        $log.debug("Send reset password email" + email);
+        return getAuth().$sendPasswordResetEmail(email);
+      },
+      changePassword: function(email, oldPassword, newPassword) {
+        $log.warn("Changing password for user " + email);
+        return getAuth().$changePassword(email, oldPassword, newPassword);
       }
     }
   }

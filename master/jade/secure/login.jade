@@ -2,25 +2,25 @@
   // START panel
   .panel.panel-dark.panel-flat
     .panel-heading.text-center
-      a(href="#")
+      a(href="https://hellorent.co")
         img.block-center.img-rounded(src='app/img/logo-1-w158x50.png', alt='HelloRent Logo')
     .panel-body
-      p.text-center.pv SIGN IN TO CONTINUE.
+      p.text-center.pv SIGN IN TO CONTINUE
       form(role='form', ng-submit="login()", validate-form='', novalidate='').mb-lg
         .form-group.has-feedback
           input#exampleInputEmail1.form-control(type='email', placeholder='Enter email', autocomplete="off", ng-model="account.email", required)
-          span.fa.fa-envelope.form-control-feedback.text-muted
+          span(style="display: inline-block; vertical-align: middle; float: none; top: 0px;").fa.fa-envelope.form-control-feedback.text-muted
         .form-group.has-feedback
           input#exampleInputPassword1.form-control(type='password', placeholder='Password', ng-model="account.password", required)
-          span.fa.fa-lock.form-control-feedback.text-muted
+          span(style="display: inline-block; vertical-align: middle; float: none; top: 0px;").fa.fa-lock.form-control-feedback.text-muted
         .clearfix
           .pull-right
-            a.text-muted(ui-sref="page.recover") Forgot your password?
+            a.text-muted(ui-sref="secure.reset") Forgot your password?
         
         button.btn.btn-block.btn-primary.mt-lg(type='submit') Login
       
       .alert.alert-danger.text-center(ng-show='authMsg') {{authMsg}}
-      p.pt-lg.text-center Need to Signup?
+      p.pt-lg.text-center Don't Have an Account?
       a(ui-sref="secure.register").btn.btn-block.btn-default Register Now
   // END panel
   .p-lg.text-center
