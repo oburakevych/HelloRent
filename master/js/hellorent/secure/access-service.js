@@ -18,9 +18,11 @@ helloRentApp.factory('accessService', ['$rootScope', '$log', 'firebaseReference'
             $log.debug("Unauthenticated");
             $rootScope.authUser = null; // clear up on logout
 
-            if (!$rootScope.$state.is("secure.login") && !$rootScope.$state.is("secure.register")) {
+            if (!$rootScope.$state.includes("secure") {
+              // Getting errors from the base.js on the login when using $state.go("secure.login")
+              // Not sure what is wrong, seems like some data is not cleaned up correctly
               window.location.href = "/";
-              //$rootScope.$state.go("secure.login", {}, {reload: true});
+              //$rootScope.$state.go("secure.login", null, {reload: true});
             }
           }
         });
