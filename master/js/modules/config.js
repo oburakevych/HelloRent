@@ -82,6 +82,12 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         templateUrl: basepath('application.html'),
         controller: 'ApplicationController'
     })
+    .state('app.settings', {
+        url: '/settings',
+        title: 'Settings',
+        templateUrl: basepath('settings.html'),
+        controller: 'SettingsController'
+    })
     ;
 
     // Set here the base of the relative path

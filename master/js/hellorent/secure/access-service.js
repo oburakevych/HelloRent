@@ -1,7 +1,6 @@
 //Access service
-helloRentApp.factory('accessService', ['$rootScope', '$state', '$log', 'firebaseReference', '$firebaseAuth', '$firebase',
-  function($rootScope, $state, $log, firebaseReference, $firebaseAuth, $firebase) {
-    console.log("accessService");
+helloRentApp.factory('accessService', ['$rootScope', '$log', 'firebaseReference', '$firebaseAuth', '$firebase',
+  function($rootScope, $log, firebaseReference, $firebaseAuth, $firebase) {
 
     function getAuth() {
       if (!$rootScope.auth) {
@@ -20,7 +19,8 @@ helloRentApp.factory('accessService', ['$rootScope', '$state', '$log', 'firebase
             $rootScope.authUser = null; // clear up on logout
 
             if (!$rootScope.$state.is("secure.login") && !$rootScope.$state.is("secure.register")) {
-              $rootScope.$state.go("secure.login");
+              window.location.href = "/";
+              //$rootScope.$state.go("secure.login", {}, {reload: true});
             }
           }
         });

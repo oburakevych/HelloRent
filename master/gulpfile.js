@@ -79,7 +79,8 @@ var vendorBaseScripts = [
   '../vendor/animo/animo.min.js',
   '../vendor/sparklines/jquery.sparkline.min.js',
   '../vendor/slimscroll/jquery.slimscroll.min.js',
-  '../vendor/parsley/parsley.min.js'
+  '../vendor/parsley/parsley.min.js',
+  '../vendor/wizard/js/bwizard.min.js'
 ];
 
 // SOURCES CONFIG 

@@ -16,6 +16,12 @@
     "translate": "sidebar.heading.USER_OPTIONS"
   },
   {
+    "text": "Settings",
+    "sref": "app.settings",
+    "icon": "icon-settings",
+    "translate": "sidebar.nav.SETTINGS"
+  },
+  {
     "text": "Logout",
     "sref": "secure.logout",
     "icon": "icon-logout",

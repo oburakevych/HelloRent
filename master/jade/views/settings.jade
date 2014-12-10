@@ -1,0 +1,61 @@
+h3 Settings
+
+
+// START panel
+.panel.panel-default
+  .panel-body
+    form-wizard(validate-form='', novalidate='')
+      .form-wizard.wizard-horizontal
+        // START wizard steps indicator
+        ol.row
+          li.col-lg-3
+            h4 Personal Information
+            small.text-muted Make sure your personal info is up to date. 
+          li.col-lg-3
+            h4 Change Password
+            small.text-muted Change your password. Please use a minimum of six characters. 
+        // END wizard steps indicator
+
+        // START Wizard Step inputs 
+        div
+          fieldset
+            legend Personal Information
+            // START row 
+            .row
+              .col-md-4
+                .form-group
+                  label First Name
+                  input.form-control(type='text', name='first-name', ng-model="authUser.firstName")
+              .col-md-4
+                .form-group
+                  label Middle Name
+                  input.form-control(type='text', name='first-name', ng-model="authUser.middleName")
+              .col-md-4
+                .form-group
+                  label Surname
+                  input.form-control(type='text', name='last-name', ng-model="authUser.surname")
+            // END row 
+        // END Wizard Step inputs 
+        // START Wizard Step inputs 
+        div
+          fieldset
+            legend Change Password
+            // START row 
+            div(ng-controller="ChangePasswordFormController").row
+              .col-md-4
+                .form-group
+                  input#signupInputPasswordOld.form-control(type='password', placeholder='Current Password', autocomplete="off", ng-model="account.oldPassword", required)
+              .col-md-4
+                .form-group
+                  input#signupInputPassword1.form-control(type='password', placeholder='New Password', autocomplete="off", ng-model="account.password", required)
+              .col-md-4
+                .form-group
+                  input#signupInputRePassword1.form-control(type='password', placeholder='Retype Password', autocomplete="off", ng-model="account.password2", required, data-parsley-equalto="#signupInputPassword1")
+
+              button(type="button", ng-click="changePassword(true)").btn.btn-oval.btn-primary.m-lg Change Password
+
+              div(ng-show='authMsg', ng-class="{'alert-success': isSuccessful, 'alert-danger': !isSuccessful}").alert.text-center.m-lg {{authMsg}}
+            // END row 
+        // END Wizard Step inputs 
+// END panel 
+

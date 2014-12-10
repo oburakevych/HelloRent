@@ -3,8 +3,8 @@
  * Register account api
  =========================================================*/
 
-helloRentApp.controller('ChangePasswordFormController', ['$rootScope', '$scope', '$log', '$state', 'accessService', 'firebaseReference', '$firebase',
-                           function($rootScope, $scope, $log, $state, accessService, firebaseReference, $firebase) {
+helloRentApp.controller('ChangePasswordFormController', ['$rootScope', '$scope', '$log', '$timeout', 'accessService', 'firebaseReference', '$firebase',
+                           function($rootScope, $scope, $log, $timeout, accessService, firebaseReference, $firebase) {
 
   $log.debug("ChangePasswordFormController");
 
@@ -16,19 +16,28 @@ helloRentApp.controller('ChangePasswordFormController', ['$rootScope', '$scope',
     $scope.authMsg = '';    
   }
 
-  $scope.changePassword = function() {
+  $scope.changePassword = function(noRedirect) {
     $scope.authMsg = ''; // clear up a possible existing message
     $scope.account.email = $scope.getEmail(); // load email later to give time authUser to load if required
 
     accessService.changePassword($scope.account.email, $scope.account.oldPassword, 
                                   $scope.account.password).then(function() {
       $log.debug("Password changed successfully!");
+      $scope.isSuccessful = true;
+      $scope.authMsg = "Password changed successfully";
+
       return accessService.login("password", $scope.account);
     }).then(function(authData) {
         $log.debug("User logged in as:", authData.uid);
-        $rootScope.$state.go('app.applications');
+        // Redirect to the dashboard if not defined by function param otherwise
+        if (!noRedirect) {
+          $timeout(function() {
+            $rootScope.$state.go('app.applications');
+          }, 1000);
+        }
     }).catch(function(error) {
         $log.warn("Login with new password failed", error);
+        $scope.isSuccessful = false;
         $scope.authMsg = "Password change failed: " + error.message;
     });
   }
