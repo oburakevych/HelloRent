@@ -25,15 +25,15 @@ h3 Settings
               .col-md-4
                 .form-group
                   label First Name
-                  input.form-control(type='text', name='first-name', ng-model="authUser.firstName")
+                  input.form-control(type='text', name='first-name', placeholder="First Name", ng-model="authUser.firstName")
               .col-md-4
                 .form-group
                   label Middle Name
-                  input.form-control(type='text', name='first-name', ng-model="authUser.middleName")
+                  input.form-control(type='text', name='first-name', placeholder="Middle Name", ng-model="authUser.middleName")
               .col-md-4
                 .form-group
                   label Surname
-                  input.form-control(type='text', name='last-name', ng-model="authUser.surname")
+                  input.form-control(type='text', name='last-name', placeholder="Surname", ng-model="authUser.surname")
 
               button(type="button", ng-click="saveUser()").btn.btn-oval.btn-primary.m-lg Save Changes
 

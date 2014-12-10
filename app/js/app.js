@@ -4734,7 +4734,9 @@ helloRentApp.factory('accessService', ['$rootScope', '$log', 'firebaseReference'
             $log.debug("Unauthenticated");
             $rootScope.authUser = null; // clear up on logout
 
-            if (!$rootScope.$state.includes("secure")) {
+            // All secure pages except "logout" should NOT be redirected
+            if (!$rootScope.$state.includes("secure") 
+                  || $rootScope.$state.is("secure.logout")) {
               // Getting errors from the base.js on the login when using $state.go("secure.login")
               // Not sure what is wrong, seems like some data is not cleaned up correctly
               window.location.href = "/";
