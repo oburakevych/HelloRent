@@ -34,6 +34,10 @@ h3 Settings
                 .form-group
                   label Surname
                   input.form-control(type='text', name='last-name', ng-model="authUser.surname")
+
+              button(type="button", ng-click="saveUser()").btn.btn-oval.btn-primary.m-lg Save Changes
+
+              div(ng-show='authMsg', ng-class="{'alert-success': isSuccessful, 'alert-danger': !isSuccessful}").alert.text-center.m-lg {{authMsg}}
             // END row 
         // END Wizard Step inputs 
         // START Wizard Step inputs 

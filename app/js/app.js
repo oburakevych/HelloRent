@@ -4734,9 +4734,11 @@ helloRentApp.factory('accessService', ['$rootScope', '$log', 'firebaseReference'
             $log.debug("Unauthenticated");
             $rootScope.authUser = null; // clear up on logout
 
-            if (!$rootScope.$state.is("secure.login") && !$rootScope.$state.is("secure.register")) {
+            if (!$rootScope.$state.includes("secure")) {
+              // Getting errors from the base.js on the login when using $state.go("secure.login")
+              // Not sure what is wrong, seems like some data is not cleaned up correctly
               window.location.href = "/";
-              //$rootScope.$state.go("secure.login", {}, {reload: true});
+              //$rootScope.$state.go("secure.login", null, {reload: true});
             }
           }
         });
@@ -4854,6 +4856,9 @@ helloRentApp.factory('firebaseReference', ['FIREBASE_URL', function(FIREBASE_URL
 helloRentApp.controller('SettingsController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout",
                   function($scope, $rootScope, $log, $firebase, $timeout){
   // Apply 3-way binding to the authUser to save all changes immediately.
-  $rootScope.authUser.$bindTo($rootScope, "authUser"); 
+  $scope.saveUser = function() {
+    $log.debug("Saving data");
+    $rootScope.authUser.$save();
+  };
 
 }]);
