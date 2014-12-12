@@ -130,6 +130,12 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         templateUrl: basepath('applications.html'),
         controller: 'ApplicationsController'
     })
+    .state('app.myapplications', {
+        url: '/myapplications',
+        title: 'My Applications',
+        templateUrl: basepath('myapplications.html'),
+        controller: 'MyApplicationsController'
+    })
     .state('app.view-application', {
         url: '/tenants/:tenantId/applications/:applicationId',
         title: 'Application',
@@ -4419,22 +4425,36 @@ helloRentApp.service('applicationService', ['$firebase', 'firebaseReference', '$
   	getAll: function(propertyId) {
   		$log.debug(propertyId);
   		return $firebase(firebaseReference
+                .child("applications")
   							.child("properties")
   							.child(propertyId)
-  							.child("applications"))
+  							.child("users"))
   						.$asObject();
   	},
   	get: function(propertyId, tenantId, applicationId) {
   		$log.debug(propertyId);
+      $log.debug(tenantId);
   		$log.debug(applicationId);
   		return $firebase(firebaseReference
-  							.child("properties")
-  							.child(propertyId)
-  							.child("applications")
-  							.child(tenantId)
+                .child("applications")
+                .child("properties")
+                .child(propertyId)
+                .child("users")
+                .child(tenantId)
   							.child(applicationId))
   						.$asObject();
-  	}
+  	},
+    getAllForTenant: function(propertyId, tenantId) {
+      $log.debug(propertyId);
+      $log.debug(tenantId);
+      return $firebase(firebaseReference
+                .child("applications")
+                .child("properties")
+                .child(propertyId)
+                .child("users")
+                .child(tenantId))
+              .$asObject();
+    }
 
   }
 }]);
@@ -4454,11 +4474,21 @@ helloRentApp.controller('ApplicationsController', ['$scope', '$rootScope', '$log
     $log.debug($rootScope.authUser);
     $rootScope.applications = [];
 
+    // Landlord
     var propertyIds = $rootScope.authUser.properties;
+     // Tenant
+    var appliedPropertyIds = $rootScope.authUser.applied ? $rootScope.authUser.applied.properties : null;
+
     if (propertyIds) {
       angular.forEach(propertyIds, function(propertyId) {
         $rootScope.applications = applicationService.getAll(propertyId);
-      });  
+      });
+    }
+
+    if (appliedPropertyIds) {
+      angular.forEach(appliedPropertyIds, function(propertyId) {
+        $rootScope.myApplications = applicationService.getAllForTenant(propertyId, $rootScope.authUser.id);
+      });
     }
   }
 }]);
@@ -4496,7 +4526,17 @@ helloRentApp.controller('ApplicationController', ['$scope', '$rootScope', '$log'
 
   $rootScope.authUser.$loaded()
     .then(function() {
-      $scope.getApplication($rootScope.authUser.properties[0], $stateParams.tenantId, $stateParams.applicationId);
+      // Landlord
+      var propertyIds = $rootScope.authUser.properties;
+
+      if (!propertyIds) {
+        // Tenant
+        propertyIds = $rootScope.authUser.applied ? $rootScope.authUser.applied.properties : null;
+      }
+      
+      if (propertyIds) {
+        $scope.getApplication(propertyIds[0], $stateParams.tenantId, $stateParams.applicationId);
+      }
     });
 }]);
 helloRentApp.factory('CreditReportService', ['$resource', function($resource) {

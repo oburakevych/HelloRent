@@ -44,6 +44,7 @@
     "nav": {
       "DASHBOARD": "Dashboard",
       "APPLICATIONS": "Tenant Applications",
+      "MY_APPLICATIONS": "My Applications",
       "WIDGETS": "Widgets",
       "WIDGETS": "Widgets",
       "DOCUMENTATION": "Documentation",

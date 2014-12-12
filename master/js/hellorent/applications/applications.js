@@ -14,11 +14,21 @@ helloRentApp.controller('ApplicationsController', ['$scope', '$rootScope', '$log
     $log.debug($rootScope.authUser);
     $rootScope.applications = [];
 
+    // Landlord
     var propertyIds = $rootScope.authUser.properties;
+     // Tenant
+    var appliedPropertyIds = $rootScope.authUser.applied ? $rootScope.authUser.applied.properties : null;
+
     if (propertyIds) {
       angular.forEach(propertyIds, function(propertyId) {
         $rootScope.applications = applicationService.getAll(propertyId);
-      });  
+      });
+    }
+
+    if (appliedPropertyIds) {
+      angular.forEach(appliedPropertyIds, function(propertyId) {
+        $rootScope.myApplications = applicationService.getAllForTenant(propertyId, $rootScope.authUser.id);
+      });
     }
   }
 }]);
@@ -56,6 +66,16 @@ helloRentApp.controller('ApplicationController', ['$scope', '$rootScope', '$log'
 
   $rootScope.authUser.$loaded()
     .then(function() {
-      $scope.getApplication($rootScope.authUser.properties[0], $stateParams.tenantId, $stateParams.applicationId);
+      // Landlord
+      var propertyIds = $rootScope.authUser.properties;
+
+      if (!propertyIds) {
+        // Tenant
+        propertyIds = $rootScope.authUser.applied ? $rootScope.authUser.applied.properties : null;
+      }
+      
+      if (propertyIds) {
+        $scope.getApplication(propertyIds[0], $stateParams.tenantId, $stateParams.applicationId);
+      }
     });
 }]);

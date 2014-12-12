@@ -8,22 +8,36 @@ helloRentApp.service('applicationService', ['$firebase', 'firebaseReference', '$
   	getAll: function(propertyId) {
   		$log.debug(propertyId);
   		return $firebase(firebaseReference
+                .child("applications")
   							.child("properties")
   							.child(propertyId)
-  							.child("applications"))
+  							.child("users"))
   						.$asObject();
   	},
   	get: function(propertyId, tenantId, applicationId) {
   		$log.debug(propertyId);
+      $log.debug(tenantId);
   		$log.debug(applicationId);
   		return $firebase(firebaseReference
-  							.child("properties")
-  							.child(propertyId)
-  							.child("applications")
-  							.child(tenantId)
+                .child("applications")
+                .child("properties")
+                .child(propertyId)
+                .child("users")
+                .child(tenantId)
   							.child(applicationId))
   						.$asObject();
-  	}
+  	},
+    getAllForTenant: function(propertyId, tenantId) {
+      $log.debug(propertyId);
+      $log.debug(tenantId);
+      return $firebase(firebaseReference
+                .child("applications")
+                .child("properties")
+                .child(propertyId)
+                .child("users")
+                .child(tenantId))
+              .$asObject();
+    }
 
   }
 }]);
