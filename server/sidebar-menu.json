@@ -11,12 +11,6 @@
     "translate": "sidebar.nav.APPLICATIONS"
   },
   {
-    "text": "My Applications",
-    "sref": "app.myapplications",
-    "icon": "icon-note",
-    "translate": "sidebar.nav.MY_APPLICATIONS"
-  },
-  {
     "text": "User options",
     "heading": "true",
     "translate": "sidebar.heading.USER_OPTIONS"
