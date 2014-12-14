@@ -124,6 +124,18 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         controller: 'AppController',
         resolve: authenticate()
     })
+    .state('app.properties', {
+        url: '/properties',
+        title: 'Properties',
+        templateUrl: basepath('properties.html'),
+        controller: 'PropertiesController'
+    })
+    .state('app.newproperty', {
+        url: '/new',
+        title: 'Add a Property',
+        templateUrl: basepath('new-property.html'),
+        controller: 'NewPropertyController'
+    })
     .state('app.applications', {
         url: '/applications',
         title: 'Applications',
@@ -965,7 +977,7 @@ App.controller('TypeaheadCtrl', ['$scope', '$http', function ($scope, $http) {
  * See file server/upload.php for more details
  =========================================================*/
 
-App.controller('FileUploadController', ['$scope', function($scope) {
+App.controller('DemoFileUploadController', ['$scope', function($scope) {
   'use strict';
   
   $scope.fileUploadList = [
@@ -4416,7 +4428,6 @@ helloRentApp
  .constant('FIREBASE_URL', 'hello-rent.firebaseio.com')
 ;
 /**=========================================================
- * Module: application.js
  * Services to find applications
  =========================================================*/
  
@@ -4539,8 +4550,115 @@ helloRentApp.controller('ApplicationController', ['$scope', '$rootScope', '$log'
       }
     });
 }]);
+helloRentApp.controller('FileUploadController', ['$scope', function($scope) {
+  'use strict';
+  
+  $scope.fileUploadList = [];
+
+  $scope.removeFile = function(index) {
+    $scope.fileUploadList.splice(index, 1);
+  };
+
+  angular.element(document).ready(function() {
+
+    var progressbar = $('#progressbar'),
+        bar         = progressbar.find('.progress-bar'),
+        settings    = {
+
+            action: 'server/upload.php', // upload url
+
+            allow : '*.(jpg|jpeg|gif|png)', // allow only images
+
+            param: 'upfile',
+
+            loadstart: function() {
+                bar.css('width', '0%').text('0%');
+                progressbar.removeClass('hidden');
+            },
+
+            progress: function(percent) {
+                percent = Math.ceil(percent);
+                bar.css('width', percent+'%').text(percent+'%');
+            },
+
+            allcomplete: function(response) {
+
+                var data = response && angular.fromJson(response);
+                bar.css('width', '100%').text('100%');
+
+                setTimeout(function(){
+                    progressbar.addClass('hidden');
+                }, 250);
+
+                // Upload Completed
+                if(data && data.file) {
+                    $scope.$apply(function() {
+                        $scope.fileUploadList.push(data);
+                    });
+                }
+            }
+        };
+
+    var select = new $.upload.select($('#upload-select'), settings),
+        drop   = new $.upload.drop($('#upload-drop'), settings);
+  });
+
+}]);
 helloRentApp.factory('CreditReportService', ['$resource', function($resource) {
 	return $resource('app/data/credit-report.json');
+}]);
+helloRentApp.controller('NewPropertyController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout", 'propertiesService', 
+                  function($scope, $rootScope, $log, $firebase, $timeout, propertiesService){
+  $log.debug("NewPropertyController");
+
+  $scope.init = function() {
+
+  }
+
+  $scope.init();
+}]);
+helloRentApp.controller('PropertiesController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout", 'propertiesService', 
+                  function($scope, $rootScope, $log, $firebase, $timeout, propertiesService){
+  $log.debug("PropertiesController");
+
+  $scope.properties = [];
+
+  $scope.getProperties = function() {
+    if ($rootScope.authUser.properties) {
+    	angular.forEach($rootScope.authUser.properties, function(propertyId){
+    		var property = propertiesService.get(propertyId);
+    		$scope.properties.push(property);
+    	});
+    }
+
+    $timeout(function() {
+    	$log.debug($scope.properties);
+    }, 3000);
+  }
+
+  $scope.init = function() {
+	$rootScope.authUser.$loaded()
+		.then(function() {
+		  $scope.getProperties();
+		});
+  }
+
+  $scope.init();
+}]);
+/**=========================================================
+ * Services to find properties
+ =========================================================*/
+ 
+helloRentApp.service('propertiesService', ['$firebase', 'firebaseReference', '$log', function($firebase, firebaseReference, $log) {
+  return {
+  	get: function(propertyId) {
+  		$log.debug(propertyId);
+  		return $firebase(firebaseReference
+  							.child("properties")
+  							.child(propertyId))
+  						.$asObject();
+  	}
+  }
 }]);
 /**=========================================================
  * Module: access-register.js

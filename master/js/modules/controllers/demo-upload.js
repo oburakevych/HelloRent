@@ -4,7 +4,7 @@
  * See file server/upload.php for more details
  =========================================================*/
 
-App.controller('FileUploadController', ['$scope', function($scope) {
+App.controller('DemoFileUploadController', ['$scope', function($scope) {
   'use strict';
   
   $scope.fileUploadList = [

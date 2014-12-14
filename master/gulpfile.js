@@ -80,7 +80,8 @@ var vendorBaseScripts = [
   '../vendor/sparklines/jquery.sparkline.min.js',
   '../vendor/slimscroll/jquery.slimscroll.min.js',
   '../vendor/parsley/parsley.min.js',
-  '../vendor/wizard/js/bwizard.min.js'
+  '../vendor/wizard/js/bwizard.min.js',
+  '../vendor/filestyle/bootstrap-filestyle.min.js'
 ];
 
 // SOURCES CONFIG 

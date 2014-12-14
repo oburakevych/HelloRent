@@ -1,0 +1,67 @@
+<h3>Add a Property
+   <small>your new property</small>
+</h3>
+<!-- START panel-->
+<div ng-controller="FileUploadController" class="panel panel-default">
+   <div class="panel-body row ml">
+      <form method="get" class="col-sm-4 form-horizontal">
+         <fieldset>
+            <div class="form-group">
+               <div class="col-sm-12">
+                  <div id="upload-drop" style="min-height: 200px;" class="box-placeholder text-center align-middle">
+                     <p>
+                        <em class="fa fa-cloud-upload fa-2x"></em>
+                     </p>Upload images by dropping them here or
+                     <div class="btn-link form-file">selecting one
+                        <input id="upload-select" type="file" name="upfile" />
+                     </div>
+                  </div>
+                  <div id="progressbar" class="progress hidden">
+                     <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="progress-bar"></div>
+                  </div>
+               </div>
+               <div class="col-sm-12">
+                  <ul class="list-group">
+                     <li ng-show="!fileUploadList.length" class="list-group-item lead text-muted text-center">No images for upload..</li>
+                     <li ng-repeat="f in fileUploadList" class="list-group-item hover-visible">{{f.file}}
+                        <a href="#" ng-click="removeFile($index)" class="pull-right hover-hidden">
+                           <em class="fa fa-times fa-lg text-muted"></em>
+                        </a>
+                     </li>
+                  </ul>
+                  <div ng-show="fileUploadList.length" class="text-right">
+                     <button type="button" class="btn btn-primary">Confirm</button>
+                  </div>
+               </div>
+            </div>
+         </fieldset>
+      </form>
+      <div class="col-sm-8">
+         <!-- START panel-->
+         <div class="panel panel-default">
+            <div class="panel-body">
+               <form role="form">
+                  <div class="form-group">
+                     <label>Address</label>
+                     <input type="text" placeholder="Address" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                     <label>Address Line 2 (Optional)</label>
+                     <input type="text" placeholder="Apt. #, level, suite, etc." class="form-control" />
+                  </div>
+                  <div class="form-group">
+                     <label>City</label>
+                     <input type="text" placeholder="City" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                     <label>Post Code</label>
+                     <input type="text" placeholder="Post Code" class="form-control" />
+                  </div>
+                  <button type="submit" class="btn btn-sm btn-default">Submit</button>
+               </form>
+            </div>
+         </div>
+         <!-- END panel-->
+      </div>
+   </div>
+</div>

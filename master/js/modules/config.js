@@ -70,6 +70,18 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         controller: 'AppController',
         resolve: authenticate()
     })
+    .state('app.properties', {
+        url: '/properties',
+        title: 'Properties',
+        templateUrl: basepath('properties.html'),
+        controller: 'PropertiesController'
+    })
+    .state('app.newproperty', {
+        url: '/new',
+        title: 'Add a Property',
+        templateUrl: basepath('new-property.html'),
+        controller: 'NewPropertyController'
+    })
     .state('app.applications', {
         url: '/applications',
         title: 'Applications',

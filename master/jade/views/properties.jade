@@ -1,0 +1,41 @@
+h3 Properties
+  small my properties
+
+div(ng-class="{'csspinner line grow': !properties}").row
+  div
+    .col-lg-6(ng-repeat='property in properties')
+      // START widget
+      .panel.widget
+        .panel-body.text-center.bg-center(style="background-image: url('{{property.coverImageUrl}}')")
+          //img.img-responsive(ng-src="{{property.coverImageUrl}}")
+          .row.row-table
+            .col-xs-12.text-white
+              h3.m0 {{property.address}}
+              p.m0
+                em.fa.fa-link.fa-fw
+                |  apply.hellorent.co/{{property.$id}}
+
+        .panel-body.text-center.bg-gray-darker
+          .row.row-table
+            .col-xs-4
+              a(href="#").text-white: em.fa.fa-twitter.fa-2x
+            .col-xs-4
+              a(href="#").text-white: em.fa.fa-facebook.fa-2x
+            .col-xs-4
+              a(href="#").text-white: em.fa.fa-comments.fa-2x
+        .list-group
+          a(href="#").list-group-item
+            span.label.label-primary.pull-right 15
+            em.fa.fa-fw.fa-clock-o.text-muted
+            |  Recent Activity
+          a(href="#").list-group-item
+            span.label.label-primary.pull-right 100
+            em.fa.fa-fw.fa-user.text-muted
+            |  Following
+          a(href="#").list-group-item
+            span.label.label-primary.pull-right 300
+            em.fa.fa-fw.fa-folder-open-o.text-muted
+            |  Photos
+      // END widget
+// END row
+// END panel tab

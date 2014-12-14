@@ -5,6 +5,18 @@
     "translate": "sidebar.heading.HEADER"
   },
   {
+    "text": "Properties",
+    "sref": "app.properties",
+    "icon": "icon-note",
+    "translate": "sidebar.nav.PROPERTIES"
+  },
+  {
+    "text": "Add a Property",
+    "sref": "app.newproperty",
+    "icon": "icon-plus",
+    "translate": "sidebar.nav.ADD_NEW_PROPERTY"
+  },
+  {
     "text": "Applications",
     "sref": "app.applications",
     "icon": "icon-note",
