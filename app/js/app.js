@@ -4607,12 +4607,102 @@ helloRentApp.controller('FileUploadController', ['$scope', function($scope) {
 helloRentApp.factory('CreditReportService', ['$resource', function($resource) {
 	return $resource('app/data/credit-report.json');
 }]);
+function RentalRecord(address, rentedFor, movedIn, movedOut) {
+	this.address = new Address();
+	this.movedIn = movedIn;
+	this.movedOut = movedOut;
+	this.rentedFor = rentedFor;
+}
+
+function WorkRecord(companyName, position, workedFor, from, to) {
+	this.companyName = companyName;
+	this.position = position;
+	this.workedFor = workedFor;
+	this.from = from;
+	this.to = to;
+	this.references = [];
+}
+
+function Profile() {
+	this.personal = {
+		picture: null,
+		about: "",
+		smoke: null
+	};
+	this.rentalHistory = [];
+	this.workHistory = [];
+}
+
+function HelloRentUser(id, email, firstName) {
+	this.id = id;
+	this.email = email;
+	this.firstName = firstName;
+	this.surname = null;
+	this.phoneNumber = null;
+	this.profile = new Profile();
+	this.properties = [];
+}
+
+function Property(ownerId) {
+	this.ownerId = ownerId;
+	this.address = new Address();
+	this.images = {};
+	this.rent = new Rent();
+}
+
+function Address() {
+	this.line1 = "";
+	this.line2 = null;
+	this.city = "";
+	this.state = "";
+	this.postCode = "";
+	this.country = "";
+}
+
+function Rent() {
+	this.amount = null;
+	this.currency = null;
+	this.type = null;
+}
 helloRentApp.controller('NewPropertyController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout", 'propertiesService', 
                   function($scope, $rootScope, $log, $firebase, $timeout, propertiesService){
   $log.debug("NewPropertyController");
 
-  $scope.init = function() {
+  $scope.property = {};
 
+  $scope.init = function() {
+    $rootScope.authUser.$loaded()
+      .then(function() {
+        $scope.property = new Property($rootScope.authUser.id);
+      }
+    );
+  }
+
+  $scope.addNewProperty = function() {
+    $log.debug("Adding a new property");
+
+    propertiesService.getNextId().then(function(propertyId) {
+      if (propertyId) {
+        propertiesService.add(propertyId, $scope.property).then(function(propertyRef) {
+          $log.debug("Added property ID: " + propertyRef.key());
+          if (angular.isUndefined($rootScope.authUser.properties)) {
+            $rootScope.authUser.properties = [];
+          }
+
+          $rootScope.authUser.properties.push(propertyRef.key());
+          
+          $rootScope.authUser.$save().then(function() {
+            $log.debug("User has a new property!");
+          }).catch(function(error) {
+            // TODO: make sure you remove property if this push fails
+            $log.warn("Failed to create a new property " + error.message);
+          });
+        });
+      }
+    }).catch(function(error) {
+      $log.warn("Cannot add a new Property");
+      $log.warn(error);
+    });
   }
 
   $scope.init();
@@ -4637,10 +4727,10 @@ helloRentApp.controller('PropertiesController', ['$scope', '$rootScope', '$log',
   }
 
   $scope.init = function() {
-	$rootScope.authUser.$loaded()
-		.then(function() {
-		  $scope.getProperties();
-		});
+  	$rootScope.authUser.$loaded()
+  		.then(function() {
+  		  $scope.getProperties();
+  		});
   }
 
   $scope.init();
@@ -4649,16 +4739,55 @@ helloRentApp.controller('PropertiesController', ['$scope', '$rootScope', '$log',
  * Services to find properties
  =========================================================*/
  
-helloRentApp.service('propertiesService', ['$firebase', 'firebaseReference', '$log', function($firebase, firebaseReference, $log) {
-  return {
-  	get: function(propertyId) {
-  		$log.debug(propertyId);
-  		return $firebase(firebaseReference
-  							.child("properties")
-  							.child(propertyId))
-  						.$asObject();
+helloRentApp.service('propertiesService', ['$firebase', 'firebaseReference', '$log', '$q',
+				function($firebase, firebaseReference, $log, $q) {
+	return {
+		get: function(propertyId) {
+			$log.debug(propertyId);
+			return $firebase(firebaseReference
+								.child("properties")
+								.child(propertyId))
+							.$asObject();
+		},
+		add: function(propertyId, property) {
+			return $firebase(firebaseReference.child("properties"))
+								.$set(propertyId, property);
+		},
+		// Generates next ID, inc the counter and returns a promise which resolves to the generated ID
+		getNextId: function() {
+			var deferred = $q.defer(); // Promise
+
+			var counterRef = firebaseReference
+							.child('counter')
+							.child("currentCount");
+
+			// increment the counter
+			counterRef.transaction(
+				function(currentValue) {
+	        		return (currentValue || 0) + 1;
+	    		}, function(error, committed, result) {
+					if (error) {
+						$log.warn("Cannot increment Property ID: " + error);
+						deferred.reject(error);
+					} else {
+						// if counter update succeeds, then update the record
+						$log.debug("Setting new value: " + result.val());
+						deferred.resolve(result.val()); // Success	
+					}
+	    		}
+	    	);
+
+	    	return deferred.promise;
+		}
   	}
-  }
+}]);
+/**=========================================================
+ * Module: firebaseReference.js
+ * Factory that establishes connection to Firebase and returns firebase reference for the services
+ =========================================================*/
+ 
+helloRentApp.factory('firebaseReference', ['FIREBASE_URL', function(FIREBASE_URL) {
+	return new Firebase(FIREBASE_URL);
 }]);
 /**=========================================================
  * Module: access-register.js
@@ -4965,51 +5094,6 @@ helloRentApp.factory('accessService', ['$rootScope', '$log', 'firebaseReference'
     }
   }
 ]);
-function RentalRecord(address, rentedFor, movedIn, movedOut) {
-	this.address = address;
-	this.movedIn = movedIn;
-	this.movedOut = movedOut;
-	this.rentedFor = rentedFor;
-}
-
-function WorkRecord(companyName, position, workedFor, from, to) {
-	this.companyName = companyName;
-	this.position = position;
-	this.workedFor = workedFor;
-	this.from = from;
-	this.to = to;
-	this.references = [];
-}
-
-function Profile() {
-	this.personal = {
-		picture: null,
-		about: "",
-		smoke: null
-	};
-	this.rentalHistory = [];
-	this.workHistory = [];
-}
-
-function HelloRentUser(id, email, firstName) {
-	this.id = id;
-	this.email = email;
-	this.firstName = firstName;
-	this.surname = null;
-	this.phoneNumber = null;
-	this.profile = new Profile();
-	this.properties = [];
-}
-
-
-/**=========================================================
- * Module: firebaseReference.js
- * Factory that establishes connection to Firebase and returns firebase reference for the services
- =========================================================*/
- 
-helloRentApp.factory('firebaseReference', ['FIREBASE_URL', function(FIREBASE_URL) {
-	return new Firebase(FIREBASE_URL);
-}]);
 /**=========================================================
  * Module: settings.js
  * =========================================================*/

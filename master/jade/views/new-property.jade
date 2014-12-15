@@ -2,9 +2,9 @@ h3 Add a Property
   small your new property
 
 // START panel
-.panel.panel-default(ng-controller="FileUploadController")
+.panel.panel-default
   .panel-body.row.ml
-    form.col-sm-4.form-horizontal(method='get')
+    form.col-sm-4.form-horizontal(method='get' ng-controller="FileUploadController")
       fieldset
         .form-group
           .col-sm-12
@@ -28,19 +28,19 @@ h3 Add a Property
       // START panel
       .panel.panel-default
         .panel-body
-          form(role='form')
+          form(role='form' ng-submit="addNewProperty()")
             .form-group
               label Address
-              input.form-control(type='text', placeholder='Address')
+              input.form-control(type='text', placeholder='Address', ng-model="property.address.line1")
             .form-group
               label Address Line 2 (Optional)
-              input.form-control(type='text', placeholder='Apt. #, level, suite, etc.')
+              input.form-control(type='text', placeholder='Apt. #, level, suite, etc.', ng-model="property.address.line2")
             .form-group
               label City
-              input.form-control(type='text', placeholder='City')
+              input.form-control(type='text', placeholder='City', ng-model="property.address.city")
             .form-group
               label Post Code
-              input.form-control(type='text', placeholder='Post Code')
+              input.form-control(type='text', placeholder='Post Code', ng-model="property.address.postCode")
 
             button.btn.btn-sm.btn-default(type='submit') Submit
       // END panel

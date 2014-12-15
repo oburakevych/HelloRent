@@ -1,5 +1,5 @@
 function RentalRecord(address, rentedFor, movedIn, movedOut) {
-	this.address = address;
+	this.address = new Address();
 	this.movedIn = movedIn;
 	this.movedOut = movedOut;
 	this.rentedFor = rentedFor;
@@ -34,3 +34,24 @@ function HelloRentUser(id, email, firstName) {
 	this.properties = [];
 }
 
+function Property(ownerId) {
+	this.ownerId = ownerId;
+	this.address = new Address();
+	this.images = {};
+	this.rent = new Rent();
+}
+
+function Address() {
+	this.line1 = "";
+	this.line2 = null;
+	this.city = "";
+	this.state = "";
+	this.postCode = "";
+	this.country = "";
+}
+
+function Rent() {
+	this.amount = null;
+	this.currency = null;
+	this.type = null;
+}

@@ -18,10 +18,10 @@ helloRentApp.controller('PropertiesController', ['$scope', '$rootScope', '$log',
   }
 
   $scope.init = function() {
-	$rootScope.authUser.$loaded()
-		.then(function() {
-		  $scope.getProperties();
-		});
+  	$rootScope.authUser.$loaded()
+  		.then(function() {
+  		  $scope.getProperties();
+  		});
   }
 
   $scope.init();
