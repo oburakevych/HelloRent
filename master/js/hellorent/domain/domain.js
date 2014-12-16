@@ -47,7 +47,7 @@ function Address() {
 	this.city = "";
 	this.state = "";
 	this.postCode = "";
-	this.country = "";
+	this.country = new Country("Australia", "AU"); // Default country
 }
 
 function Rent() {
@@ -55,3 +55,8 @@ function Rent() {
 	this.currency = null;
 	this.type = null;
 }
+
+function Country(name, code) {
+	this.name = name;
+	this.code = code;
+} 

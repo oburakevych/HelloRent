@@ -1,5 +1,5 @@
-helloRentApp.controller('NewPropertyController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout", 'propertiesService', 
-                  function($scope, $rootScope, $log, $firebase, $timeout, propertiesService){
+helloRentApp.controller('NewPropertyController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout", 'propertiesService', 'countryService',
+                  function($scope, $rootScope, $log, $firebase, $timeout, propertiesService, countryService){
   $log.debug("NewPropertyController");
 
   $scope.property = {};
@@ -8,6 +8,7 @@ helloRentApp.controller('NewPropertyController', ['$scope', '$rootScope', '$log'
     $rootScope.authUser.$loaded()
       .then(function() {
         $scope.property = new Property($rootScope.authUser.id);
+        $scope.countries = countryService.query();
       }
     );
   }

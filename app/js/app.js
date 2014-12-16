@@ -4604,9 +4604,6 @@ helloRentApp.controller('FileUploadController', ['$scope', function($scope) {
   });
 
 }]);
-helloRentApp.factory('CreditReportService', ['$resource', function($resource) {
-	return $resource('app/data/credit-report.json');
-}]);
 function RentalRecord(address, rentedFor, movedIn, movedOut) {
 	this.address = new Address();
 	this.movedIn = movedIn;
@@ -4656,7 +4653,7 @@ function Address() {
 	this.city = "";
 	this.state = "";
 	this.postCode = "";
-	this.country = "";
+	this.country = new Country("Australia", "AU"); // Default country
 }
 
 function Rent() {
@@ -4664,8 +4661,13 @@ function Rent() {
 	this.currency = null;
 	this.type = null;
 }
-helloRentApp.controller('NewPropertyController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout", 'propertiesService', 
-                  function($scope, $rootScope, $log, $firebase, $timeout, propertiesService){
+
+function Country(name, code) {
+	this.name = name;
+	this.code = code;
+} 
+helloRentApp.controller('NewPropertyController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout", 'propertiesService', 'countryService',
+                  function($scope, $rootScope, $log, $firebase, $timeout, propertiesService, countryService){
   $log.debug("NewPropertyController");
 
   $scope.property = {};
@@ -4674,6 +4676,7 @@ helloRentApp.controller('NewPropertyController', ['$scope', '$rootScope', '$log'
     $rootScope.authUser.$loaded()
       .then(function() {
         $scope.property = new Property($rootScope.authUser.id);
+        $scope.countries = countryService.query();
       }
     );
   }
@@ -4780,14 +4783,6 @@ helloRentApp.service('propertiesService', ['$firebase', 'firebaseReference', '$l
 	    	return deferred.promise;
 		}
   	}
-}]);
-/**=========================================================
- * Module: firebaseReference.js
- * Factory that establishes connection to Firebase and returns firebase reference for the services
- =========================================================*/
- 
-helloRentApp.factory('firebaseReference', ['FIREBASE_URL', function(FIREBASE_URL) {
-	return new Firebase(FIREBASE_URL);
 }]);
 /**=========================================================
  * Module: access-register.js
@@ -5094,6 +5089,20 @@ helloRentApp.factory('accessService', ['$rootScope', '$log', 'firebaseReference'
     }
   }
 ]);
+helloRentApp.factory('countryService', ['$resource', function($resource) {
+	return $resource('app/data/country-codes.json');
+}]);
+helloRentApp.factory('CreditReportService', ['$resource', function($resource) {
+	return $resource('app/data/credit-report.json');
+}]);
+/**=========================================================
+ * Module: firebase-reference.js
+ * Factory that establishes connection to Firebase and returns firebase reference for the services
+ =========================================================*/
+ 
+helloRentApp.factory('firebaseReference', ['FIREBASE_URL', function(FIREBASE_URL) {
+	return new Firebase(FIREBASE_URL);
+}]);
 /**=========================================================
  * Module: settings.js
  * =========================================================*/

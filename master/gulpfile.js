@@ -81,7 +81,9 @@ var vendorBaseScripts = [
   '../vendor/slimscroll/jquery.slimscroll.min.js',
   '../vendor/parsley/parsley.min.js',
   '../vendor/wizard/js/bwizard.min.js',
-  '../vendor/filestyle/bootstrap-filestyle.min.js'
+  '../vendor/filestyle/bootstrap-filestyle.min.js',
+  '../vendor/tagsinput/bootstrap-tagsinput.min.js',
+  '../vendor/chosen/chosen.jquery.min.js'
 ];
 
 // SOURCES CONFIG 

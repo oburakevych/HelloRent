@@ -1,5 +1,5 @@
 /**=========================================================
- * Module: firebaseReference.js
+ * Module: firebase-reference.js
  * Factory that establishes connection to Firebase and returns firebase reference for the services
  =========================================================*/
  

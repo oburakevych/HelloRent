@@ -41,6 +41,9 @@ h3 Add a Property
             .form-group
               label Post Code
               input.form-control(type='text', placeholder='Post Code', ng-model="property.address.postCode")
+            div(ng-if="countries.length > 0").form-group
+              label Country
+              select.chosen-select.input-md(chosen='', ng-model='property.address.country', ng-options='c.name for c in countries')
 
             button.btn.btn-sm.btn-default(type='submit') Submit
       // END panel

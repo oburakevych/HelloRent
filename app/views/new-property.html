@@ -57,6 +57,10 @@
                      <label>Post Code</label>
                      <input type="text" placeholder="Post Code" ng-model="property.address.postCode" class="form-control" />
                   </div>
+                  <div ng-if="countries.length &gt; 0" class="form-group">
+                     <label>Country</label>
+                     <select chosen="" ng-model="property.address.country" ng-options="c.name for c in countries" class="chosen-select input-md"></select>
+                  </div>
                   <button type="submit" class="btn btn-sm btn-default">Submit</button>
                </form>
             </div>
