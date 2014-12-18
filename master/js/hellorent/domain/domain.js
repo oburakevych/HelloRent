@@ -39,6 +39,12 @@ function Property(ownerId) {
 	this.address = new Address();
 	this.images = {};
 	this.rent = new Rent();
+	this.bedrooms = 2;
+	this.bathrooms = 1;
+	this.carspaces = 1;
+	this.type = {name: 'House', code: 'HOUSE'}; // Default
+	this.pets = null; //['No', 'Dogs', 'Cats', 'All OK'];
+	this.description = "";
 }
 
 function Address() {
@@ -52,11 +58,12 @@ function Address() {
 
 function Rent() {
 	this.amount = null;
-	this.currency = null;
-	this.type = null;
+	this.bond = null;
+	this.currency = 'AUD';
+	this.type = 'WEEK';
 }
 
 function Country(name, code) {
 	this.name = name;
 	this.code = code;
-} 
+}

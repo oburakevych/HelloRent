@@ -8,7 +8,8 @@ helloRentApp.controller('PropertiesController', ['$scope', '$rootScope', '$log',
     if ($rootScope.authUser.properties) {
     	angular.forEach($rootScope.authUser.properties, function(propertyId){
     		var property = propertiesService.get(propertyId);
-    		$scope.properties.push(property);
+    		$log.debug(property);
+        $scope.properties.push(property);
     	});
     }
 

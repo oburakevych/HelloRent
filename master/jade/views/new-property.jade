@@ -29,22 +29,76 @@ h3 Add a Property
       .panel.panel-default
         .panel-body
           form(role='form' ng-submit="addNewProperty()")
-            .form-group
-              label Address
-              input.form-control(type='text', placeholder='Address', ng-model="property.address.line1")
-            .form-group
-              label Address Line 2 (Optional)
-              input.form-control(type='text', placeholder='Apt. #, level, suite, etc.', ng-model="property.address.line2")
-            .form-group
-              label City
-              input.form-control(type='text', placeholder='City', ng-model="property.address.city")
-            .form-group
-              label Post Code
-              input.form-control(type='text', placeholder='Post Code', ng-model="property.address.postCode")
-            div(ng-if="countries.length > 0").form-group
-              label Country
-              select.chosen-select.input-md(chosen='', ng-model='property.address.country', ng-options='c.name for c in countries')
+            .row
+              .form-group.col-sm-12
+                label Address
+                input.form-control(type='text', placeholder='Address', ng-model="property.address.line1")
+            .row
+              .form-group.col-sm-12
+                label Address Line 2 (Optional)
+                input.form-control(type='text', placeholder='Apt. #, level, suite, etc.', ng-model="property.address.line2")
+            .row
+              .form-group.col-sm-6
+                label City
+                input.form-control(type='text', placeholder='City', ng-model="property.address.city")
+              .form-group.col-sm-6
+                label Post Code
+                input.form-control(type='text', placeholder='Post Code', ng-model="property.address.postCode")
+            .row    
+              .form-group.col-sm-6
+                label State
+                input.form-control(type='text', placeholder='Post Code', ng-model="property.address.state")
+              div(ng-if="countries.length > 0").form-group.col-sm-6
+                label Country
+                br
+                select.chosen-select.input-md(chosen='', ng-model='property.address.country', ng-options='c.name for c in countries')
+            
+            .row
+              .form-group.col-sm-6
+                label Weekly Rent
+                .input-group.m-b
+                  span.input-group-addon $
+                  input.form-control(type='text', ng-model='property.rent.amount')
+              .form-group.col-sm-6
+                label Bond
+                .input-group.m-b
+                  span.input-group-addon $
+                  input.form-control(type='text', ng-model='property.rent.bond')
+
+            .row
+              .form-group.col-sm-4
+                label Bedrooms
+                .input-group.m-b
+                  span.input-group-addon
+                  input.form-control(type='number', ng-model='property.bedrooms')
+              .form-group.col-sm-4
+                label Bathrooms
+                .input-group.m-b
+                  span.input-group-addon
+                  input.form-control(type='number', ng-model='property.bathrooms')
+              .form-group.col-sm-4
+                label Carspaces
+                .input-group.m-b
+                  span.input-group-addon
+                    em.fa.fa-car
+                  input.form-control(type='number', ng-model='property.carspaces')
+
+            .row
+              .form-group.col-sm-6
+                label Type
+                br
+                select.chosen-select.input-md(chosen='', ng-model='property.type', ng-options='t.name for t in propertyTypeList')
+              .form-group.col-sm-6
+                label Pets
+                br
+                select.chosen-select.input-md(chosen='', multiple='', ng-model='selectedPets', ng-options='p.name for p in petsList')
+            .row
+              .form-group.col-sm-12
+                label Description (Optional)
+                input.form-control(type='text', placeholder='Description', ng-model="property.description")
 
             button.btn.btn-sm.btn-default(type='submit') Submit
+
+            div(ng-show='message', ng-class="{'alert-success': isSuccessful, 'alert-danger': !isSuccessful}").alert.text-center.m-lg {{message}}
       // END panel
 

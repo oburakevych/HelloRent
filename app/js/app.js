@@ -4645,6 +4645,12 @@ function Property(ownerId) {
 	this.address = new Address();
 	this.images = {};
 	this.rent = new Rent();
+	this.bedrooms = 2;
+	this.bathrooms = 1;
+	this.carspaces = 1;
+	this.type = {name: 'House', code: 'HOUSE'}; // Default
+	this.pets = null; //['No', 'Dogs', 'Cats', 'All OK'];
+	this.description = "";
 }
 
 function Address() {
@@ -4658,14 +4664,15 @@ function Address() {
 
 function Rent() {
 	this.amount = null;
-	this.currency = null;
-	this.type = null;
+	this.bond = null;
+	this.currency = 'AUD';
+	this.type = 'WEEK';
 }
 
 function Country(name, code) {
 	this.name = name;
 	this.code = code;
-} 
+}
 helloRentApp.controller('NewPropertyController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout", 'propertiesService', 'countryService',
                   function($scope, $rootScope, $log, $firebase, $timeout, propertiesService, countryService){
   $log.debug("NewPropertyController");
@@ -4673,16 +4680,34 @@ helloRentApp.controller('NewPropertyController', ['$scope', '$rootScope', '$log'
   $scope.property = {};
 
   $scope.init = function() {
+    $scope.countries = countryService.query();
+    $scope.propertyTypeList = [
+            {name: 'House', code: 'HOUSE'},
+            {name: 'Apartment & Unit', code: 'APARTMENT'},
+            {name: 'Townhouse', code: 'TOWNHOUSE'}];
+    $scope.petsList = [
+            {name: 'No', code: "NO"},
+            {name: 'Dogs', code: "DOGS"},
+            {name: 'Cats', code: "CATS"},
+            {name: 'Fishes', code: "FISHES"},
+            {name: 'Birds', code: "BIRDS"},
+            {name: 'All OK', code: "ALL"}];
+    $scope.selectedPets = $scope.petsList[0]; // 'NO' as default
+
     $rootScope.authUser.$loaded()
       .then(function() {
         $scope.property = new Property($rootScope.authUser.id);
-        $scope.countries = countryService.query();
       }
     );
   }
 
   $scope.addNewProperty = function() {
     $log.debug("Adding a new property");
+
+    $scope.message = ""; // crear up any previous message
+    
+    $scope.setPets();
+    $scope.validate($scope.property);
 
     propertiesService.getNextId().then(function(propertyId) {
       if (propertyId) {
@@ -4696,16 +4721,43 @@ helloRentApp.controller('NewPropertyController', ['$scope', '$rootScope', '$log'
           
           $rootScope.authUser.$save().then(function() {
             $log.debug("User has a new property!");
+            $scope.isSuccessful = true;
+            $scope.message = "Property has been added";
+
+            $timeout(function() {
+              $rootScope.$state.go("app.properties");
+            }, 3000);
           }).catch(function(error) {
             // TODO: make sure you remove property if this push fails
             $log.warn("Failed to create a new property " + error.message);
+            $scope.isSuccessful = false;
+            $scope.message = "Error eddind property: " + error.message;
           });
         });
       }
     }).catch(function(error) {
       $log.warn("Cannot add a new Property");
       $log.warn(error);
+      $scope.isSuccessful = false;
+      $scope.message = "Error eddind property: " + error.message;
     });
+  }
+
+  $scope.setPets = function() {
+    if ($scope.selectedPets) {
+      // When using Select HTML element with directives chosen='', multiple='', it creates
+      // $$hashKey in the object. However, '$' is not supported in Firebase as a key.
+      // angula.copy will copy the object without its private keys (starting with $$).
+      angular.copy($scope.selectedPets, $scope.property.pets);
+    }
+  }
+
+  $scope.validate = function(property) {
+    if (!property) {
+      return false;
+    }
+
+    return true;
   }
 
   $scope.init();
@@ -4720,7 +4772,8 @@ helloRentApp.controller('PropertiesController', ['$scope', '$rootScope', '$log',
     if ($rootScope.authUser.properties) {
     	angular.forEach($rootScope.authUser.properties, function(propertyId){
     		var property = propertiesService.get(propertyId);
-    		$scope.properties.push(property);
+    		$log.debug(property);
+        $scope.properties.push(property);
     	});
     }
 
@@ -5089,6 +5142,18 @@ helloRentApp.factory('accessService', ['$rootScope', '$log', 'firebaseReference'
     }
   }
 ]);
+/**=========================================================
+ * Module: settings.js
+ * =========================================================*/
+helloRentApp.controller('SettingsController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout",
+                  function($scope, $rootScope, $log, $firebase, $timeout){
+  // Apply 3-way binding to the authUser to save all changes immediately.
+  $scope.saveUser = function() {
+    $log.debug("Saving data");
+    $rootScope.authUser.$save();
+  };
+
+}]);
 helloRentApp.factory('countryService', ['$resource', function($resource) {
 	return $resource('app/data/country-codes.json');
 }]);
@@ -5102,16 +5167,4 @@ helloRentApp.factory('CreditReportService', ['$resource', function($resource) {
  
 helloRentApp.factory('firebaseReference', ['FIREBASE_URL', function(FIREBASE_URL) {
 	return new Firebase(FIREBASE_URL);
-}]);
-/**=========================================================
- * Module: settings.js
- * =========================================================*/
-helloRentApp.controller('SettingsController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout",
-                  function($scope, $rootScope, $log, $firebase, $timeout){
-  // Apply 3-way binding to the authUser to save all changes immediately.
-  $scope.saveUser = function() {
-    $log.debug("Saving data");
-    $rootScope.authUser.$save();
-  };
-
 }]);
