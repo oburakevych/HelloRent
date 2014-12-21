@@ -9,8 +9,8 @@ div(ng-class="{'csspinner line grow': !properties}").row
         .panel-body.text-center.bg-center(style="background-image: url('{{property.coverImageUrl}}')")
           //img.img-responsive(ng-src="{{property.coverImageUrl}}")
           .row.row-table
-            .col-xs-12.text-white
-              h3.m0 {{property.address}}
+            .col-xs-12.text-black.shadow-white
+              h3.m0 {{property.address | address}}
               p.m0
                 em.fa.fa-link.fa-fw
                 |  apply.hellorent.co/{{property.$id}}
