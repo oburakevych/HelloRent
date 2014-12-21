@@ -9,21 +9,13 @@ div(ng-class="{'csspinner line grow': !properties}").row
         .panel-body.text-center.bg-center(style="background-image: url('{{property.coverImageUrl}}')")
           //img.img-responsive(ng-src="{{property.coverImageUrl}}")
           .row.row-table
-            .col-xs-12.text-black.shadow-white
-              h3.m0 {{property.address | address}}
-              p.m0
-                a(ng-href="http://apply.hellorent.co/{{property.$id}}", target="_blank")
-                  em.fa.fa-link.fa-fw
-                  |  apply.hellorent.co/{{property.$id}}
-
+            .col-xs-12.text-absolute-black.shadow-white
+              h3.mt-xl.mb-xl {{property.address | address}}
         .panel-body.text-center.bg-gray-darker
-          .row.row-table
-            .col-xs-4
-              a(href="#").text-white: em.fa.fa-twitter.fa-2x
-            .col-xs-4
-              a(href="#").text-white: em.fa.fa-facebook.fa-2x
-            .col-xs-4
-              a(href="#").text-white: em.fa.fa-comments.fa-2x
+          p.m0
+            a(ng-href="http://apply.hellorent.co/{{property.$id}}", target="_blank")
+              em.fa.fa-link.fa-fw
+              |  apply.hellorent.co/{{property.$id}}
         .list-group
           a(href="#").list-group-item
             span.label.label-primary.pull-right 15
@@ -38,5 +30,11 @@ div(ng-class="{'csspinner line grow': !properties}").row
             em.fa.fa-fw.fa-folder-open-o.text-muted
             |  Photos
       // END widget
+    // END COLUMN
+    .col-lg-6
+      a(data-ui-sref="app.newproperty").link-unstyled
+        .panel.widget
+          .panel-body.text-center.mt-xl.mb-xl
+            h2.text-gray Add New Property
 // END row
 // END panel tab
