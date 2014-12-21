@@ -26,7 +26,7 @@ helloRentApp.controller('LoginFormController', ['$rootScope', '$scope', '$log', 
           $rootScope.tmpAccount = $scope.account; // temporary store account data for the next step - password change
           $state.go('secure.changePassword');
         } else {
-          $state.go('app.applications');
+          $state.go('app.properties');
         }
       }).catch(function(error) {
         $log.error("Authentication failed:", error);

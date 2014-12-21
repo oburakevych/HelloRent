@@ -57,7 +57,7 @@ helloRentApp.controller('RegisterFormController', ['$rootScope', '$scope', '$log
     var newUser = new HelloRentUser(uid, email, name);
     
     usersRef.$set(uid, newUser).then(function() {
-      $rootScope.$state.go('app.applications');
+      $rootScope.$state.go('app.properties');
     });
   }
 }]);
