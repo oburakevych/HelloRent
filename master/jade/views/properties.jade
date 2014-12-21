@@ -12,8 +12,9 @@ div(ng-class="{'csspinner line grow': !properties}").row
             .col-xs-12.text-black.shadow-white
               h3.m0 {{property.address | address}}
               p.m0
-                em.fa.fa-link.fa-fw
-                |  apply.hellorent.co/{{property.$id}}
+                a(ng-href="http://apply.hellorent.co/{{property.$id}}", target="_blank")
+                  em.fa.fa-link.fa-fw
+                  |  apply.hellorent.co/{{property.$id}}
 
         .panel-body.text-center.bg-gray-darker
           .row.row-table
