@@ -4715,39 +4715,6 @@ function Country(name, code) {
 	this.name = name;
 	this.code = code;
 }
-
-helloRentApp.filter('address', [function() {
-	var ADDRESS_LINE_SPLITTER = ", ";
-	var ADDRESS_SPACE_SPLITTER = " ";
-	var ADDRESS_EMPTY = "";
-	
-	return function(propertyAddress) {
-		if (!propertyAddress) {
-			return ADDRESS_EMPTY;
-		}
-
-		var address = ADDRESS_EMPTY;
-
-		if (propertyAddress.line1) {
-			address += propertyAddress.line1;
-		}
-
-		if (propertyAddress.line2) {
-			address = propertyAddress.line2 + ADDRESS_LINE_SPLITTER + address;
-		}
-
-		if (propertyAddress.city) {
-			address += 	ADDRESS_LINE_SPLITTER + propertyAddress.city;
-
-			if (propertyAddress.postCode) {
-				address += ADDRESS_SPACE_SPLITTER + propertyAddress.postCode;
-			}	
-		}
-
-		return address;
-	}
-	
-}]);
 helloRentApp.controller('NewPropertyController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout", 'propertiesService', 'countryService',
                   function($scope, $rootScope, $log, $firebase, $timeout, propertiesService, countryService){
   $log.debug("NewPropertyController");
@@ -4911,6 +4878,39 @@ helloRentApp.service('propertiesService', ['$firebase', 'firebaseReference', '$l
 	    	return deferred.promise;
 		}
   	}
+}]);
+
+helloRentApp.filter('address', [function() {
+	var ADDRESS_LINE_SPLITTER = ", ";
+	var ADDRESS_SPACE_SPLITTER = " ";
+	var ADDRESS_EMPTY = "";
+	
+	return function(propertyAddress) {
+		if (!propertyAddress) {
+			return ADDRESS_EMPTY;
+		}
+
+		var address = ADDRESS_EMPTY;
+
+		if (propertyAddress.line1) {
+			address += propertyAddress.line1;
+		}
+
+		if (propertyAddress.line2) {
+			address = propertyAddress.line2 + ADDRESS_LINE_SPLITTER + address;
+		}
+
+		if (propertyAddress.city) {
+			address += 	ADDRESS_LINE_SPLITTER + propertyAddress.city;
+
+			if (propertyAddress.postCode) {
+				address += ADDRESS_SPACE_SPLITTER + propertyAddress.postCode;
+			}	
+		}
+
+		return address;
+	}
+	
 }]);
 /**=========================================================
  * Module: access-register.js
@@ -5217,6 +5217,18 @@ helloRentApp.factory('accessService', ['$rootScope', '$log', 'firebaseReference'
     }
   }
 ]);
+/**=========================================================
+ * Module: settings.js
+ * =========================================================*/
+helloRentApp.controller('SettingsController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout",
+                  function($scope, $rootScope, $log, $firebase, $timeout){
+  // Apply 3-way binding to the authUser to save all changes immediately.
+  $scope.saveUser = function() {
+    $log.debug("Saving data");
+    $rootScope.authUser.$save();
+  };
+
+}]);
 helloRentApp.factory('countryService', ['$resource', function($resource) {
 	return $resource('app/data/country-codes.json');
 }]);
@@ -5230,16 +5242,4 @@ helloRentApp.factory('CreditReportService', ['$resource', function($resource) {
  
 helloRentApp.factory('firebaseReference', ['FIREBASE_URL', function(FIREBASE_URL) {
 	return new Firebase(FIREBASE_URL);
-}]);
-/**=========================================================
- * Module: settings.js
- * =========================================================*/
-helloRentApp.controller('SettingsController', ['$scope', '$rootScope', '$log', '$firebase', "$timeout",
-                  function($scope, $rootScope, $log, $firebase, $timeout){
-  // Apply 3-way binding to the authUser to save all changes immediately.
-  $scope.saveUser = function() {
-    $log.debug("Saving data");
-    $rootScope.authUser.$save();
-  };
-
 }]);

@@ -15505,7 +15505,7 @@ body,
   color: #515253;
 }
 .shadow-white {
-  text-shadow: 1px 1px white;
+  text-shadow: 1px 1px 6px white;
 }
 .text-absolute-black {
   color: black;

@@ -83,8 +83,8 @@ var vendorBaseScripts = [
   '../vendor/wizard/js/bwizard.min.js',
   '../vendor/filestyle/bootstrap-filestyle.min.js',
   '../vendor/tagsinput/bootstrap-tagsinput.min.js',
-  '../vendor/chosen/chosen.jquery.min.js'
-  //'../vendor/aws/aws-js-sdk.min.js'
+  '../vendor/chosen/chosen.jquery.min.js',
+  '../vendor/aws/aws-js-sdk.min.js'
 ];
 
 // SOURCES CONFIG 
